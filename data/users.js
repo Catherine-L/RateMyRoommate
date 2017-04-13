@@ -1,4 +1,3 @@
-// copied from lecture 8 code data/users.js
 const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
 const uuid = require('node-uuid');
@@ -19,14 +18,28 @@ let exportedMethods = {
             });
         });
     },
-    addUser(firstName, lastName) {
+    addUser(firstname, lastname, email, password, city, state, country) {
         return users().then((userCollection) => {
             let newUser = {
-                firstName: firstName,
-                lastName: lastName,
-                _id: uuid.v4()
+                _id: uuid.v4(),
+                firstname: firstname,
+                lastname: lastname,
+                email: email,
+                password: password,
+                address:{
+                    city: city,
+                    state: state,
+                    country: country
+                },
+                ratings:{
+                    ratingCount: 0,
+                    cleanlyAverage: 0,
+                    loudAverage: 0,
+                    annoyingAverage: 0,
+                    friendlyAverage: 0,
+                    considerateAverage: 0,
+                }
             };
-
             return userCollection.insertOne(newUser).then((newInsertInformation) => {
                 return newInsertInformation.insertedId;
             }).then((newId) => {
@@ -43,13 +56,28 @@ let exportedMethods = {
             });
         });
     },
-    updateUser(id, firstName, lastName) {
+    updateUser(id, firstname, lastname, email, password, city, state, country, ratingCount, cleanlyAverage, 
+    loudAverage, annoyingAverage, friendlyAverage, considerateAverage) {
         return this.getUserById(id).then((currentUser) => {
             let updatedUser = {
-                firstName: name,
-                lastName: lastName
+                firstname: firstname,
+                lastname: lastname,
+                email: email,
+                password: password,
+                address:{
+                    city: city,
+                    state: state,
+                    country: country
+                },
+                ratings:{
+                    ratingCount: ratingCount,
+                    cleanlyAverage: cleanlyAverage,
+                    loudAverage: loudAverage,
+                    annoyingAverage: annoyingAverage,
+                    friendlyAverage: friendlyAverage,
+                    considerateAverage: considerateAverage
+                }
             };
-
             return userCollection.updateOne({ _id: id }, updatedUser).then(() => {
                 return this.getUserById(id);
             });

@@ -1,72 +1,72 @@
 // copied from lecture 8 code data/posts.js
 
 const mongoCollections = require("../config/mongoCollections");
-const posts = mongoCollections.posts;
+const comments = mongoCollections.comments;
 const users = require("./users");
 const uuid = require('node-uuid');
 
 let exportedMethods = {
-    getAllPosts() {
-        return posts().then((postCollection) => {
-            return postCollection.find({}).toArray();
+    getAllComments() {
+        return comments().then((commentCollection) => {
+            return commentCollection.find({}).toArray();
         })
     },
-    getPostById(id) {
-        return posts().then((postCollection) => {
-            return postCollection.findOne({ _id: id }).then((post) => {
-                if (!post) throw "Post not found";
-                return post;
+    getCommentById(id) {
+        return comments().then((commentCollection) => {
+            return commentCollection.findOne({ _id: id }).then((comment) => {
+                if (!comment) throw "comment not found";
+                return comment;
             });
         });
     },
-    addPost(title, body, posterId) {
-        return posts().then((postCollection) => {
-            return users.getUserById(posterId)
-                .then((userThatPosted) => {
-                    let newPost = {
-                        title: title,
-                        body: body,
-                        poster: {
-                            id: posterId,
-                            name: `${userThatPosted.firstName} ${userThatPosted.lastName}`
-                        },
-                        _id: uuid.v4()
-                    };
-
-                    return postCollection.insertOne(newPost).then((newInsertInformation) => {
-                        return newInsertInformation.insertedId;
-                    }).then((newId) => {
-                        return this.getPostById(newId);
-                    });
-                });
+    addComment(userWhoCommented_Id, userWhoCommentIsFor_Id, comment, userFlagged_Id, flagReason) {
+        return comments().then((commentCollection) => {
+            let newComment = {
+                _id: uuid.v4(),
+                userWhoCommented_id: userWhoCommented_Id,
+                userWhoCommentIsFor_id: userWhoCommentIsFor_Id,
+                date: new.Date(),
+                comment: comment,
+                spam:[
+                    {
+                        userFlagged_Id: userFlagged_Id,
+                        flagReason: flagReason
+                    }
+                ]
+            };
+            return commentCollection.insertOne(newComment).then((newInsertInformation) => {
+                return newInsertInformation.insertedId;
+            }).then((newId) => {
+                return this.getCommentById(newId);
+            });
         });
     },
-    removePost(id) {
-        return posts().then((postCollection) => {
-            return postCollection.removeOne({ _id: id }).then((deletionInfo) => {
+    removeComment(id) {
+        return comments().then((commentCollection) => {
+            return commentCollection.removeOne({ _id: id }).then((deletionInfo) => {
                 if (deletionInfo.deletedCount === 0) {
-                    throw (`Could not delete post with id of ${id}`)
+                    throw (`Could not delete comment with id of ${id}`)
                 } else { }
             });
         });
     },
-    updatePost(id, title, body, posterId) {
-        return posts().then((postCollection) => {
-            return users.getUserById(posterId)
-                .then((userThatPosted) => {
-                    let updatedPost = {
-                        title: title,
-                        body: body,
-                        poster: {
-                            id: posterId,
-                            name: userThatPosted.name
-                        }
-                    };
-
-                    return postCollection.updateOne({ _id: id }, updatedPost).then((result) => {
-                        return this.getPostById(id);
-                    });
-                });
+    updateComment(id, userWhoCommented_Id, userWhoCommentIsFor_Id, comment, userFlagged_Id, flagReason) {
+        return comments().then((commentCollection) => {
+            let updatedComment = {
+                userWhoCommented_id: userWhoCommented_Id,
+                userWhoCommentIsFor_id: userWhoCommentIsFor_Id,
+                date: new.Date(),
+                comment: comment,
+                spam:[
+                    {
+                        userFlagged_Id: userFlagged_Id,
+                        flagReason: flagReason
+                    }
+                ]
+            };
+            return commentCollection.updateOne({ _id: id }, updatedComment).then((result) => {
+                return this.getCommentById(id);
+            });
         });
     }
 }
