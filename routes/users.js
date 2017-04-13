@@ -40,7 +40,17 @@ router.post("/", (req, res) => {
         return;
     }
 
-    userData.addUser(userInfo.firstName, userInfo.lastName)
+    if (!userInfo.email) {
+        res.status(400).json({ error: "You must provide an email" });
+        return;
+    }
+
+    if (!userInfo.password) {
+        res.status(400).json({ error: "You must provide a password" });
+        return;
+    }
+    
+    userData.addUser(userInfo.firstName, userInfo.lastName, userInfo.email, userInfo.password)
         .then((newUser) => {
             res.json(newUser);
         }, () => {
@@ -55,7 +65,7 @@ router.put("/:id", (req, res) => {
         res.status(400).json({ error: "You must provide data to update a user" });
         return;
     }
-
+    /*
     if (!userInfo.firstName) {
         res.status(400).json({ error: "You must provide a first name" });
         return;
@@ -65,6 +75,7 @@ router.put("/:id", (req, res) => {
         res.status(400).json({ error: "You must provide a last name" });
         return;
     }
+    */
 
     let getUser = userData.getUser(req.params.id).then(() => {
         return userData.updateUser(req.params.id, userInfo)
@@ -81,7 +92,7 @@ router.put("/:id", (req, res) => {
 
 router.delete("/:id", (req, res) => {
     let user = userData.getUserById(req.params.id).then(() => {
-        return userData.removePost(req.params.id)
+        return userData.removeUser(req.params.id)
             .then(() => {
                 res.sendStatus(200);
             }).catch(() => {

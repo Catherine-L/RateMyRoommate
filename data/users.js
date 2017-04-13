@@ -18,18 +18,18 @@ let exportedMethods = {
             });
         });
     },
-    addUser(firstname, lastname, email, password, city, state, country) {
+    addUser(firstName, lastName, email, password) {
         return users().then((userCollection) => {
             let newUser = {
                 _id: uuid.v4(),
-                firstname: firstname,
-                lastname: lastname,
+                firstName: firstName,
+                lastName: lastName,
                 email: email,
                 password: password,
                 address:{
-                    city: city,
-                    state: state,
-                    country: country
+                    city: null,
+                    state: null,
+                    country: null
                 },
                 ratings:{
                     ratingCount: 0,
@@ -66,13 +66,13 @@ let exportedMethods = {
             });
         });
     },
-    updateUser(id, firstname, lastname, email, password, city, state, country, ratingCount, cleanlyAverage, 
-    loudAverage, annoyingAverage, friendlyAverage, considerateAverage, userWhoRated_Id, cleanlyRating, loudRating, 
+    updateUser(id, firstName, lastName, email, password, city, state, country, ratingCount, cleanlyAverage, 
+    loudAverage, annoyingAverage, friendlyAverage, considerateAverage, userWhoRated_id, cleanlyRating, loudRating, 
     annoyingRating, friendlyRating, considerateRating) {
         return this.getUserById(id).then((currentUser) => {
             let updatedUser = {
-                firstname: firstname,
-                lastname: lastname,
+                firstName: firstName,
+                lastName: lastName,
                 email: email,
                 password: password,
                 address:{
@@ -89,7 +89,7 @@ let exportedMethods = {
                     considerateAverage: considerateAverage,
                     detail:[
                         {
-                            userWhoRated_id: userWhoRated_Id,
+                            userWhoRated_id: userWhoRated_id,
                             cleanlyRating: cleanlyRating, 
                             loudRating: loudRating, 
                             annoyingRating: annoyingRating, 

@@ -19,17 +19,17 @@ let exportedMethods = {
             });
         });
     },
-    addComment(userWhoCommented_Id, userWhoCommentIsFor_Id, comment, userFlagged_Id, flagReason) {
+    addComment(userWhoCommented_id, userWhoCommentIsFor_id, comment, userFlagged_id, flagReason) {
         return comments().then((commentCollection) => {
             let newComment = {
                 _id: uuid.v4(),
-                userWhoCommented_id: userWhoCommented_Id,
-                userWhoCommentIsFor_id: userWhoCommentIsFor_Id,
+                userWhoCommented_id: userWhoCommented_id,
+                userWhoCommentIsFor_id: userWhoCommentIsFor_id,
                 date: new.Date(),
                 comment: comment,
                 spam:[
                     {
-                        userFlagged_Id: userFlagged_Id,
+                        userFlagged_id: userFlagged_id,
                         flagReason: flagReason
                     }
                 ]
@@ -50,16 +50,16 @@ let exportedMethods = {
             });
         });
     },
-    updateComment(id, userWhoCommented_Id, userWhoCommentIsFor_Id, comment, userFlagged_Id, flagReason) {
+    updateComment(id, userWhoCommented_id, userWhoCommentIsFor_id, comment, userFlagged_id, flagReason) {
         return comments().then((commentCollection) => {
             let updatedComment = {
-                userWhoCommented_id: userWhoCommented_Id,
-                userWhoCommentIsFor_id: userWhoCommentIsFor_Id,
+                userWhoCommented_id: userWhoCommented_id,
+                userWhoCommentIsFor_id: userWhoCommentIsFor_id,
                 date: new.Date(),
                 comment: comment,
                 spam:[
                     {
-                        userFlagged_Id: userFlagged_Id,
+                        userFlagged_Id: userFlagged_id,
                         flagReason: flagReason
                     }
                 ]

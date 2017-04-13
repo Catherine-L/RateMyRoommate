@@ -3,58 +3,59 @@
 const express = require('express');
 const router = express.Router();
 const data = require("../data");
-const postData = data.posts;
+const commentData = data.comments;
 
 router.get("/new", (req, res) => {
-    res.render('posts/new');
+    res.render('comments/new');
 })
 
 router.get("/:id", (req, res) => {
-    postData.getPostById(req.params.id).then((post) => {
-        res.render('posts/single', { post: post });
+    postData.getCommentById(req.params.id).then((comment) => {
+        res.render('comments/single', { comment: comment });
     }).catch(() => {
-        res.status(404).json({ error: "Post not found" });
+        res.status(404).json({ error: "Comment not found" });
     });
 });
 
-router.get("/tag/:tag", (req, res) => {
+/*router.get("/tag/:tag", (req, res) => {
     postData.getPostsByTag(req.params.tag).then((postList) => {
         res.render('posts/index', { posts: postList });
     });
-});
+});*/
 
 router.get("/", (req, res) => {
-    postData.getAllPosts().then((postList) => {
-        res.render('posts/index', { posts: postList });
+    postData.getAllComments().then((commentList) => {
+        res.render('comments/index', { comments: commentList });
     }).catch((e) => {
         res.status(500).json({ error: e });
     });
 });
 
 router.post("/", (req, res) => {
-    let blogPostData = req.body;
+    let commentPostedData = req.body;
     let errors = [];
 
-    if (!blogPostData.title) {
-        errors.push("No title provided");
+    if (!commentPostedData.userWhoCommented_id) {
+        errors.push("No userWhoCommented_id provided");
     }
 
-    if (!blogPostData.body) {
-        errors.push("No body provided");
+    if (!commentPostedData.userWhoCommentIsFor_id) {
+        errors.push("No userWhoCommentIsFor_id provided");
     }
-
-    if (!blogPostData.posterId) {
-        errors.push("No poster selected");
+    
+    if (!commentPostedData.comment) {
+        errors.push("No comment content provided");
     }
 
     if (errors.length > 0) {
-        res.render('posts/new', { errors: errors, hasErrors: true, post: blogPostData});
+        res.render('comments/new', { errors: errors, hasErrors: true, comment: commentPostedData});
         return;
     }
 
-    postData.addPost(blogPostData.title, blogPostData.body, blogPostData.tags || [], blogPostData.posterId)
-        .then((newPost) => {
-            res.redirect(`/posts/${newPost._id}`);
+    postData.addComment(commentPostedData.userWhoCommented_id, commentPostedData.userWhoCommentIsFor_id, 
+    commentPostedData.userFlagged_id || null, commentPostedData.flagReason || null)
+        .then((newComment) => {
+            res.redirect(`/comments/${newComment._id}`);
         }).catch((e) => {
             res.status(500).json({ error: e });
         });
@@ -63,12 +64,12 @@ router.post("/", (req, res) => {
 router.put("/:id", (req, res) => {
     let updatedData = req.body;
 
-    let getPost = postData.getPostById(req.params.id);
+    let getComment = commentData.getCommentById(req.params.id);
 
-    getPost.then(() => {
-        return postData.updatePost(req.params.id, updatedData)
-            .then((updatedPost) => {
-                res.json(updatedPost);
+    getComment.then(() => {
+        return commentData.updateComment(req.params.id, updatedData)
+            .then((updatedComment) => {
+                res.json(updatedComment);
             }).catch((e) => {
                 res.status(500).json({ error: e });
             });
@@ -79,10 +80,10 @@ router.put("/:id", (req, res) => {
 });
 
 router.delete("/:id", (req, res) => {
-    let getPost = postData.getPostById(req.params.id);
+    let getComment = commentData.getCommentById(req.params.id);
 
-    getPost.then(() => {
-        return postData.removePost(req.params.id)
+    getComment.then(() => {
+        return commentData.removeCommentt(req.params.id)
             .then(() => {
                 res.sendStatus(200);
             }).catch((e) => {
