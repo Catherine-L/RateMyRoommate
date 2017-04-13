@@ -38,6 +38,16 @@ let exportedMethods = {
                     annoyingAverage: 0,
                     friendlyAverage: 0,
                     considerateAverage: 0,
+                    detail:[
+                        {
+                            userWhoRated_id: null,
+                            cleanlyRating: 0,
+                            loudRating: 0,
+                            annoyingRating: 0,
+                            friendlyRating: 0,
+                            considerateRating: 0
+                        }
+                    ]
                 }
             };
             return userCollection.insertOne(newUser).then((newInsertInformation) => {
@@ -57,7 +67,8 @@ let exportedMethods = {
         });
     },
     updateUser(id, firstname, lastname, email, password, city, state, country, ratingCount, cleanlyAverage, 
-    loudAverage, annoyingAverage, friendlyAverage, considerateAverage) {
+    loudAverage, annoyingAverage, friendlyAverage, considerateAverage, userWhoRated_Id, cleanlyRating, loudRating, 
+    annoyingRating, friendlyRating, considerateRating) {
         return this.getUserById(id).then((currentUser) => {
             let updatedUser = {
                 firstname: firstname,
@@ -75,7 +86,17 @@ let exportedMethods = {
                     loudAverage: loudAverage,
                     annoyingAverage: annoyingAverage,
                     friendlyAverage: friendlyAverage,
-                    considerateAverage: considerateAverage
+                    considerateAverage: considerateAverage,
+                    detail:[
+                        {
+                            userWhoRated_id: userWhoRated_Id,
+                            cleanlyRating: cleanlyRating, 
+                            loudRating: loudRating, 
+                            annoyingRating: annoyingRating, 
+                            friendlyRating: friendlyRating,
+                            considerateRating: considerateRating
+                        }
+                    ]
                 }
             };
             return userCollection.updateOne({ _id: id }, updatedUser).then(() => {
