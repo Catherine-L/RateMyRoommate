@@ -1,5 +1,5 @@
 // copied from lecture 8 code tasks/seed.js
-
+/*
 const dbConnection = require("../config/mongoConnection");
 const data = require("../data/");
 const users = data.users;
@@ -28,3 +28,4 @@ dbConnection().then(db => {
 }, (error) => {
     console.error(error);
 });
+*/
