@@ -18,6 +18,14 @@ let exportedMethods = {
             });
         });
     },
+     getUserByUsername(username) {
+        return users().then((userCollection) => {
+            return userCollection.findOne({ username: username }).then((user) => {
+                if (!user) throw "User not found";
+                return user;
+            });
+        });
+    },
     addUser(firstName, lastName, email, password) {
         return users().then((userCollection) => {
             let newUser = {
