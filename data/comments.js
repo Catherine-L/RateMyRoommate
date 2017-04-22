@@ -19,6 +19,11 @@ let exportedMethods = {
             });
         });
     },
+    getCommentsByUser(userId) {
+        return comments().then((commentCollection) => {
+            return commentCollection.find({userWhoCommentIsFor_id: userId.toString() }).toArray();
+        });
+    },
     addComment(userWhoCommented_id, userWhoCommentIsFor_id, comment, userFlagged_id, flagReason) {
         return comments().then((commentCollection) => {
             let newComment = {

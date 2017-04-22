@@ -1,0 +1,27 @@
+<div class="body">
+  <h1>Profile</h1>
+  <p> First Name: {{user.firstName}} </p>
+  <p> Last Name: {{user.lastName}} </p>
+  <p> Email: {{user.email}} </p>
+  <p> City: {{user.address.city}} </p>
+  <p> State: {{user.address.state}} </p>
+  <p> Country: {{user.address.country}} </p>
+  <h2>Ratings</h2>
+  <p>
+    {{#each user.ratings as |value key|}}
+      {{#ifCond key '!=' "detail"}} <!-- details are not shown to users, internal use only -->
+        <p>{{key}}: {{value}} </p>
+      {{/ifCond}}
+    {{/each}}
+  </p>
+  <h2>Comments</h2>
+  {{#each comments}}
+    <div>
+      <p> Date: {{date}} </p>
+      <p> {{comment}} </p>
+      <button type="button">Flag Comment</button>
+    </div>
+  {{else}}
+    <p>No comments</p>
+  {{/each}}
+</div>

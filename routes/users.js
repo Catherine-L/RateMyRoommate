@@ -2,12 +2,18 @@
 
 const express = require('express');
 const router = express.Router();
-const data = require("../data");
-const userData = data.users;
+const userData = require("../data/users");
+const commentData = require("../data/comments");
 
 router.get("/:id", (req, res) => {
     userData.getUserById(req.params.id).then((user) => {
-        res.json(user);
+        commentData.getCommentsByUser(req.params.id).then((comments) => {
+            //console.log("getting user " + comments);
+            res.render('user', {user: user, comments: comments});
+        }).catch(() => {
+            //console.log("getting user comments failed");
+            res.render('user', {user: user, comments: []});
+        });
     }).catch(() => {
         res.status(404).json({ error: "User not found" });
     });
