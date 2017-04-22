@@ -25,7 +25,7 @@ let exportedMethods = {
                 _id: uuid.v4(),
                 userWhoCommented_id: userWhoCommented_id,
                 userWhoCommentIsFor_id: userWhoCommentIsFor_id,
-                date: new.Date(),
+                date: new Date(),
                 comment: comment,
                 spam:[
                     {
@@ -55,7 +55,7 @@ let exportedMethods = {
             let updatedComment = {
                 userWhoCommented_id: userWhoCommented_id,
                 userWhoCommentIsFor_id: userWhoCommentIsFor_id,
-                date: new.Date(),
+                date: new Date(),
                 comment: comment,
                 spam:[
                     {
