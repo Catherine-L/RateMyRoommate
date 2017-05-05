@@ -18,8 +18,8 @@ passport.deserializeUser(function (user, done) {
 passport.use('login', new LocalStrategy({
   passReqToCallback: true
 },
-  function (req, username, password, done) {
-    users.findUserByUsername(username).then((_data) => {
+  function (req, email, password, done) {
+    users.findUserByEmail(email).then((_data) => {
       console.log(_data)
       if (_data) {
         if (!isValidPassword(password, _data.password)) {
@@ -27,7 +27,7 @@ passport.use('login', new LocalStrategy({
         }
         return done(null,
         {
-          username: username,
+          //maybe name? see if necessary later
           userID: _data.userID,
           email: _data.userEmail,
         })
@@ -41,6 +41,7 @@ passport.use('login', new LocalStrategy({
   })
 )
 
+//don't forget to check if email is unique when you do sign up
 var isValidPassword = function (pRaw, pHashed) {
   return bCrypt.compareSync(pRaw, pHashed)
 }

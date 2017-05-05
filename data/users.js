@@ -18,9 +18,9 @@ let exportedMethods = {
             });
         });
     },
-     getUserByUsername(username) {
+     getUserByEmail(email) {
         return users().then((userCollection) => {
-            return userCollection.findOne({ username: username }).then((user) => {
+            return userCollection.findOne({ email: email }).then((user) => {
                 if (!user) throw "User not found";
                 return user;
             });
