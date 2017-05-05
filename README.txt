@@ -11,6 +11,9 @@ Setting Up
 Seeding the Database (maybe not needed)
 - run 'node ./tasks/seed.js' from the src directory within the project
 
+To create a sample database (pure mongo stuff, not node, for testing convenience. Perhaps delete existing db first, not sure)
+- run mongorestore -d rate_roommate data/sample_db/rate_roommate/ 
+
 Running the Application
 - run 'npm start' from the src directory of the project
 - load 'localhost:3000' from your browser

@@ -1,0 +1,124 @@
+[
+  {
+    "_id": 1,
+    "firstName": "Fred",
+    "lastName": "Blob",
+    "email": "fake@email.com",
+    "password": "$2y$10$6Al6tU9GmmoNxM4pss8Jmeuv.HNUMhS0csBeku1N0LIIFsf1Wr16y",
+    "address":{
+      "city": "Hoboken",
+      "state": "NJ",
+      "country": "US"
+    },
+
+    "ratings":{
+      "ratingCount": 2,
+      "cleanlyAverage": 2,
+      "loudAverage": 2,
+      "annoyingAverage": 2,
+      "friendlyAverage": 2,
+      "considerateAverage": 2,
+      "detail":[
+        {
+          "userWhoRated_id": 2,
+          "cleanlyRating": 2,
+          "loudRating": 2,
+          "annoyingRating": 2,
+          "friendlyRating": 2,
+          "considerateRating": 2
+        },
+
+        {
+          "userWhoRated_id": 3,
+          "cleanlyRating": 2,
+          "loudRating": 2,
+          "annoyingRating": 2,
+          "friendlyRating": 2,
+          "considerateRating": 2
+        }
+      ]
+    }
+  },
+
+  {
+    "_id": 2,
+    "firstName": "Jess",
+    "lastName": "Peterson",
+    "email": "jp@email.com",
+    "password": "$2y$10$6Al6tU9GmmoNxM4pss8Jmeuv.HNUMhS0csBeku1N0LIIFsf1Wr16y",
+    "address":{
+      "city": "Hoboken",
+      "state": "NJ",
+      "country": "US"
+    },
+
+    "ratings":{
+      "ratingCount": 2,
+      "cleanlyAverage": 3,
+      "loudAverage": 3,
+      "annoyingAverage": 3,
+      "friendlyAverage": 3,
+      "considerateAverage": 3,
+      "detail":[
+        {
+          "userWhoRated_id": 1,
+          "cleanlyRating": 2,
+          "loudRating": 2,
+          "annoyingRating": 2,
+          "friendlyRating": 2,
+          "considerateRating": 2
+        },
+
+        {
+          "userWhoRated_id": 3,
+          "cleanlyRating": 4,
+          "loudRating": 4,
+          "annoyingRating": 4,
+          "friendlyRating": 4,
+          "considerateRating": 4
+        }
+      ]
+    }
+  },
+
+  {
+    "_id": 3,
+    "firstName": "Chad",
+    "lastName": "Lowe",
+    "email": "cl@email.com",
+    "password": "$2y$10$6Al6tU9GmmoNxM4pss8Jmeuv.HNUMhS0csBeku1N0LIIFsf1Wr16y",
+    "address":{
+      "city": "Hoboken",
+      "state": "NJ",
+      "country": "US"
+    },
+
+    "ratings":{
+      "ratingCount": 2,
+      "cleanlyAverage": 1,
+      "loudAverage": 1,
+      "annoyingAverage": 1,
+      "friendlyAverage": 1,
+      "considerateAverage": 1,
+      "detail":[
+        {
+          "userWhoRated_id": 1,
+          "cleanlyRating": 1,
+          "loudRating": 1,
+          "annoyingRating": 1,
+          "friendlyRating": 1,
+          "considerateRating": 1
+        },
+
+        {
+          "userWhoRated_id": 2,
+          "cleanlyRating": 1,
+          "loudRating": 1,
+          "annoyingRating": 1,
+          "friendlyRating": 1,
+          "considerateRating": 1
+        }
+      ]
+    }
+  }
+]

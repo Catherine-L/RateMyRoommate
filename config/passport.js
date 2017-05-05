@@ -1,7 +1,7 @@
 var passport = require('passport')
 var LocalStrategy = require('passport-local').Strategy
 var bCrypt = require('bcrypt')
-const users = require('./data/users')
+const users = require('../data/users')
 
 // Passport needs to be able to serialize and deserialize users to support persistent login sessions
 passport.serializeUser(function (user, done) {

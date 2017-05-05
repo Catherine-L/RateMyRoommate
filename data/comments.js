@@ -19,13 +19,18 @@ let exportedMethods = {
             });
         });
     },
+    getCommentsByUser(userId) {
+        return comments().then((commentCollection) => {
+            return commentCollection.find({userWhoCommentIsFor_id: userId.toString() }).toArray();
+        });
+    },
     addComment(userWhoCommented_id, userWhoCommentIsFor_id, comment, userFlagged_id, flagReason) {
         return comments().then((commentCollection) => {
             let newComment = {
                 _id: uuid.v4(),
                 userWhoCommented_id: userWhoCommented_id,
                 userWhoCommentIsFor_id: userWhoCommentIsFor_id,
-                date: new.Date(),
+                date: new Date(),
                 comment: comment,
                 spam:[
                     {
@@ -55,7 +60,7 @@ let exportedMethods = {
             let updatedComment = {
                 userWhoCommented_id: userWhoCommented_id,
                 userWhoCommentIsFor_id: userWhoCommentIsFor_id,
-                date: new.Date(),
+                date: new Date(),
                 comment: comment,
                 spam:[
                     {
