@@ -19,23 +19,28 @@ passport.use('login', new LocalStrategy({
   passReqToCallback: true
 },
   function (req, email, password, done) {
+    console.log(`Searching for ${email} with ${password}`)
     users.findUserByEmail(email).then((_data) => {
       console.log(_data)
       if (_data) {
         if (!isValidPassword(password, _data.password)) {
+          console.log(`Invalid Password ${password}. Login failed.`)
           return done(null, false, req.flash('message', 'Invalid Password'))
         }
+        console.log("Successfully logged in!")
         return done(null,
         {
           //maybe name? see if necessary later
           userID: _data.userID,
-          email: _data.userEmail,
+          email: _data.userEmail
         })
       } else {
+          console.log(`Invalid Email ${email}. Login failed.`)
           return done(null, false, req.flash('message', 'Account does not exist'))
       }
     })
       .catch((err) => {
+        console.log("No user with this email")
         return done(err)
       })
   })

@@ -1,15 +1,19 @@
 //copy from lecture 9 code for app.js 
 
 const express = require("express");
+const exphbs = require('express-handlebars');
+const expses = require('express-session');
+const Handlebars = require('handlebars');
 const bodyParser = require("body-parser");
+const cookieParser = require('cookie-parser')
+const flash = require('connect-flash')
+
+const configRoutes = require("./routes");
+const passport = require("./config/passport")
+
 const app = express();
 const static = express.static(__dirname + '/public');
 
-const configRoutes = require("./routes");
-
-const exphbs = require('express-handlebars');
-
-const Handlebars = require('handlebars');
 
 const handlebarsInstance = exphbs.create({
     defaultLayout: 'main',
@@ -66,6 +70,15 @@ const rewriteUnsupportedBrowserMethods = (req, res, next) => {
 
 app.use("/public", static);
 app.use(bodyParser.json());
+app.use(cookieParser())
+app.use(flash())
+app.use(expses({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true
+}))
+app.use(passport.initialize())
+app.use(passport.session())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(rewriteUnsupportedBrowserMethods);
 

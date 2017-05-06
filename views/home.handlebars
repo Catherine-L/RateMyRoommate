@@ -5,4 +5,10 @@
   <button type="button">Find A New Roommate</button>
   <button type="button">Find A City</button>
   <button type="button">Rate A Previous Roommate</button>
+
+  {{#if user}}
+  <h2>Hi user!!</h2>
+  {{else}}
+  <h2>You're not logged in.</h2>
+  {{/if}}
 </div>

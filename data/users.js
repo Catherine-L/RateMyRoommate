@@ -19,6 +19,7 @@ let exportedMethods = {
         });
     },
      getUserByEmail(email) {
+         console.log(`looking for user with email ${email}`)
         return users().then((userCollection) => {
             return userCollection.findOne({ email: email }).then((user) => {
                 if (!user) throw "User not found";

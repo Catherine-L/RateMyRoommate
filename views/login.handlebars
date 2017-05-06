@@ -3,14 +3,20 @@
     <p><strong>Error: </strong>{{message}}</p>
   {{/if}}
 
+  {{#if user}}
+  <h2>Hi user!!</h2>
+  {{else}}
+  <h2>You're not logged in.</h2>
+  {{/if}}
+
   <div class="form-group hidden" id="error-container">
     <div class="alert alert-danger text-goes-here">
     </div>
   </div>
   <form class="form-horizontal" action="/login" method="post">
     <div class="form-group">
-      <label for="username">Username:</label>
-      <input id="username" class="form-control" type="text" name="username" />
+      <label for="email">Email:</label>
+      <input id="email" class="form-control" type="text" name="email" />
         <br/>
     </div>
     <div class="form-group">
