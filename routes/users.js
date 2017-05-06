@@ -9,10 +9,11 @@ router.get("/:id", (req, res) => {
     userData.getUserById(req.params.id).then((user) => {
         commentData.getCommentsByUser(req.params.id).then((comments) => {
             //console.log("getting user " + comments);
-            res.render('user', {user: user, comments: comments});
+            //console.log(req.user);
+            res.render('user', {user: user, comments: comments, loggedIn: req.user});
         }).catch(() => {
             //console.log("getting user comments failed");
-            res.render('user', {user: user, comments: []});
+            res.render('user', {user: user, comments: [], loggedIn: req.user});
         });
     }).catch(() => {
         res.status(404).json({ error: "User not found" });
@@ -26,6 +27,29 @@ router.get("/", (req, res) => {
         // Something went wrong with the server!
         res.sendStatus(500);
     });
+});
+
+router.post("/:id/comment", (req, res) => {
+    let errors = []
+    if(!req.user)
+        errors.push("You're not logged in. Hacker.");
+    if(!req.body.comment)
+        errors.push("You gotta write a comment buddy.");
+    if(!req.params.id)
+        errors.push("Not commenting on any user. Somehow.");
+
+    if (errors.length > 0) {
+        res.json({errors: errors, success:false});
+        return;
+    }
+    commentData.addComment(req.user.userID,req.params.id,req.body.comment)
+        .then((newComment) => {
+            res.json({success: true, errors: []});
+        }).catch((e) => {
+            res.json({errors: ["Error adding comment, server error"], success: false});
+        });
+    //console.log(req.user);
+    //console.log(req.body);
 });
 
 router.post("/", (req, res) => {

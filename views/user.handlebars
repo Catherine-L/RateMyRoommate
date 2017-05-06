@@ -15,6 +15,7 @@
     {{/each}}
   </p>
   <h2>Comments</h2>
+  <div>
   {{#each comments}}
     <div>
       <p> Date: {{date}} </p>
@@ -24,4 +25,19 @@
   {{else}}
     <p>No comments</p>
   {{/each}}
+  </div>
+  {{#if loggedIn}}
+    <button type="button" id="addCommentButton">Add Comment</button>
+    <div id="commentFormDiv">
+      <form id="addCommentForm">
+        <!-- <div>
+          <label for="addCommentBox"> Your Comment</label>
+          <input id="addCommentBox" type="text" placeholder="Write here" />
+        </div> -->
+        <button type="submit"> Submit </button>
+      </form>
+      <textarea form="addCommentForm" id="addCommentBox"></textarea>
+    </div>
+    <p id="commentFormResponse"></p>
+  {{/if}}
 </div>
