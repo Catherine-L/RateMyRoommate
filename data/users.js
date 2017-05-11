@@ -113,16 +113,70 @@ let exportedMethods = {
             });
         });
     },
-    addRatingToUser(id, cleanlyRating,loudRating,annoyingRating,friendlyRating,considerateRating)
+    addRatingToUser(id, userWhoRatedId, cleanlyRating,loudRating,annoyingRating,friendlyRating,considerateRating)
     {
-        return this.getUserById(id).then((user) =>
+        return users().then((userCollection) =>
         {
-            let newAverages =
+            let ratingDetails = 
             {
-                ratingCount: ratingCount+1,
-                cleanlyAverage: ((cleanlyAverage*(ratingCount-1))+cleanlyRating)/ratingCount,
-                loudAverage: ((loudAverage*(ratingCount-1))+loudRating)/ratingCount,
+                userWhoRated_id: userWhoRatedId,
+                cleanlyRating: cleanlyRating, 
+                loudRating: loudRating, 
+                annoyingRating: annoyingRating, 
+                friendlyRating: friendlyRating,
+                considerateRating: considerateRating
             };
+
+            return userCollection.update({_id: id}, {$push: {"ratings.detail": ratingDetails}}).then((result) =>
+            {
+                if (!result)
+                    return Promise.reject("Unable to add rating");
+               
+                return this.getUserById(id).then((user) =>
+                {
+                    let detail = user.ratings.detail;
+                    let ratingCount = 0;
+                    let cleanlyAverage = 0;
+                    let loudAverage = 0;
+                    let annoyingAverage = 0;
+                    let friendlyAverage = 0;
+                    let considerateAverage = 0;
+
+                    for (i in detail)
+                    {
+                        ratingCount++;
+                        cleanlyAverage += parseInt(detail[i].cleanlyRating);
+                        loudAverage += parseInt(detail[i].loudRating);
+                        annoyingAverage += parseInt(detail[i].annoyingRating);
+                        friendlyAverage += parseInt(detail[i].friendlyRating);
+                        considerateAverage += parseInt(detail[i].considerateRating);
+                    }
+
+                    cleanlyAverage /= ratingCount;
+                    loudAverage /= ratingCount;
+                    annoyingAverage /= ratingCount;
+                    friendlyAverage /= ratingCount;
+                    considerateAverage /= ratingCount;
+
+                    let updateCommand =
+                    {
+                        $set: { "ratings.ratingCount": ratingCount,
+                            "ratings.cleanlyAverage": cleanlyAverage,
+                            "ratings.loudAverage": loudAverage,
+                            "ratings.annoyingAverage": annoyingAverage,
+                            "ratings.friendlyAverage": friendlyAverage,
+                            "ratings.considerateAverage": considerateAverage }
+                    }
+
+                    return userCollection.updateOne({_id: id}, updateCommand).then((result) =>
+                    {
+                        if (!result)
+                            return Promise.reject("Error updating averages");
+                        
+                        return this.getUserById(id);
+                    });
+                });
+            });
         });
     }
 }

@@ -1,18 +1,22 @@
 <h2> Rate {{user.firstName}} {{user.lastName}} </h2>
 
-<label for="cleanlyRating">Cleanliness</label>
-<input id = "cleanlyRating" type="range" min="0" max = "5" />
+<form id="ratingForm" method="POST">
 
-<label for="loudRating">Loudness</label>
-<input id = "loudRating" type="range" min="0" max = "5" />
+    <label for="cleanlyRating">Cleanliness</label>
+    <input id = "cleanlyRating" name="cleanlyRating" type="range" min="0" max = "5" />
 
-<label for="annoyingRating">Annoyingness</label>
-<input id = "annoyingRating" type="range" min="0" max = "5" />
+    <label for="loudRating">Loudness</label>
+    <input id = "loudRating" name="loudRating" type="range" min="0" max = "5" />
 
-<label for="friendlyRating">Friendliness</label>
-<input id = "friendlyRating" type="range" min="0" max = "5" />
+    <label for="annoyingRating">Annoyingness</label>
+    <input id = "annoyingRating" name="annoyingRating" type="range" min="0" max = "5" />
 
-<label for="considerateRating">Considerateness</label>
-<input id = "considerateRating" type="range" min="0" max = "5" />
+    <label for="friendlyRating">Friendliness</label>
+    <input id = "friendlyRating" name="friendlyRating" type="range" min="0" max = "5" />
 
-<input class="form-control" type="submit" value="Submit" method = "post" />
+    <label for="considerateRating">Considerateness</label>
+    <input id = "considerateRating" name="considerateRating" type="range" min="0" max = "5" />
+
+    <input class="form-control" type="submit" value="Submit"/>
+
+</form>

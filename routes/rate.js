@@ -20,11 +20,18 @@ router.get('/:id', (req, res) =>
 
 router.post('/:id', (req, res) =>
 {
-   let ratingData = req.body; 
+    let ratingData = req.body; 
 
    //todo error checking
+    console.log(req.body);
+    console.log(ratingData.cleanlyRating);
+    console.log(req.params);
 
-   userData.addRatingToUser(req.params.id, ratingData.cleanlyRating, ratingData.loudRating, 
+    console.log(req.user);
+    console.log(req.user._id);
+    console.log(req.user.userID);
+
+    userData.addRatingToUser(req.params.id, req.user.userID, ratingData.cleanlyRating, ratingData.loudRating, 
         ratingData.annoyingRating, ratingData.friendlyRating, ratingData.considerateRating).then((updatedUserData) =>
         {
             res.redirect(`/users/${updatedUserData._id}`);
