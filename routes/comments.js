@@ -83,7 +83,7 @@ router.delete("/:id", (req, res) => {
     let getComment = commentData.getCommentById(req.params.id);
 
     getComment.then(() => {
-        return commentData.removeCommentt(req.params.id)
+        return commentData.removeComment(req.params.id)
             .then(() => {
                 res.sendStatus(200);
             }).catch((e) => {

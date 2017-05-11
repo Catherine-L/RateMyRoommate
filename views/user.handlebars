@@ -7,20 +7,26 @@
   <p> State: {{user.address.state}} </p>
   <p> Country: {{user.address.country}} </p>
   <h2>Ratings</h2>
-  <p>
+
     {{#each user.ratings as |value key|}}
       {{#ifCond key '!=' "detail"}} <!-- details are not shown to users, internal use only -->
         <p>{{key}}: {{value}} </p>
       {{/ifCond}}
     {{/each}}
-  </p>
+    {{#if loggedIn}}
+      <p> Have you lived with this person? </p>
+      <form id="addRating" method="get" action="/rate/{{user._id}}">
+        <button type ="submit">Rate This Roommate</button>
+      </form>
+    {{/if}}
+  
   <h2>Comments</h2>
   <div>
   {{#each comments}}
     <div>
       <p> Date: {{date}} </p>
       <p> {{comment}} </p>
-      <button type="button">Flag Comment</button>
+        <button type="button">Flag Comment</button>
     </div>
   {{else}}
     <p>No comments</p>

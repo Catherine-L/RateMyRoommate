@@ -4,12 +4,14 @@
 const userRoutes = require("./users");
 const homeRoute = require("./home")
 const loginRoute = require("./login")
+const rateRoute = require("./rate")
 
 const constructorMethod = (app) => {
     //app.use("/comments", commentRoutes);
     app.use("/users", userRoutes);
     app.use('/home', homeRoute)
     app.use('/login', loginRoute)
+    app.use('/rate', rateRoute)
     app.use('/', (req, res) => {
         res.render('home', {user: req.user})
     })

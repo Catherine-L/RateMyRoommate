@@ -113,6 +113,18 @@ let exportedMethods = {
             });
         });
     },
+    addRatingToUser(id, cleanlyRating,loudRating,annoyingRating,friendlyRating,considerateRating)
+    {
+        return this.getUserById(id).then((user) =>
+        {
+            let newAverages =
+            {
+                ratingCount: ratingCount+1,
+                cleanlyAverage: ((cleanlyAverage*(ratingCount-1))+cleanlyRating)/ratingCount,
+                loudAverage: ((loudAverage*(ratingCount-1))+loudRating)/ratingCount,
+            };
+        });
+    }
 }
 
 module.exports = exportedMethods;

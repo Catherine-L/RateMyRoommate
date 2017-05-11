@@ -73,6 +73,31 @@ let exportedMethods = {
                 return this.getCommentById(id);
             });
         });
+    },
+    addSpamFlagToComment(id, userFlagged_Id, flagReason)
+    {
+        if (!id)
+            return Promise.reject("Must provide a comment id");
+        if (!userFlagged_Id)
+            return Promise.reject("Must provide id of user that flagged");
+        if (!flagReason)
+            return Promise.reject("Must provide reason for flagging comment as spam");
+        
+        return comments().then((commentCollection)=>
+        {
+            let newSpamFlag =
+            {
+                userFlagged_Id: userFlagged_Id,
+                flagReason: flagReason
+            };
+
+            return commentCollection.update({_id: id}, {$push: {"spam": newSpamFlag}}).then((result) =>
+            {
+                if (!result)
+                    return Promise.reject("Problem flagging comment as spam");
+                return this.getCommentById(id);
+            });
+        });
     }
 }
 
