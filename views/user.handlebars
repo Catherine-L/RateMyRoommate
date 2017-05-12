@@ -1,6 +1,8 @@
 <div class="body">
   <h1>Profile</h1>
-  <button type="button" onclick="window.location='/profile-edit/${user._id}';">Edit Profile</button>
+  {{#if loggedIn}}
+  <button type="button" onclick="window.location='/profile-edit/{{loggedIn.userID}}';">Edit Profile</button>
+  {{/if}}   
   <p> First Name: {{user.firstName}} </p>
   <p> Last Name: {{user.lastName}} </p>
   <p> Email: {{user.email}} </p>

@@ -7,7 +7,7 @@ router.get('/:id', (req, res) =>{
         res.status(400).json({ error: "You must be logged in to edit your profile." });
     else{
         userData.getUserById(req.params.id).then((user) => {
-            res.render('profile-edit', {user: user});
+            res.render('profile-edit', {user: user, loggedIn: req.user});
         }).catch(() => {
             res.status(404).json({ error: "User not found" });
         });
