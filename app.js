@@ -79,6 +79,13 @@ app.use(expses({
 }))
 app.use(passport.initialize())
 app.use(passport.session())
+app.use('/logout', (req, res) =>
+{
+    req.logout()
+    res.redirect('/')
+})
+
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(rewriteUnsupportedBrowserMethods);
 
