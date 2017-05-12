@@ -22,10 +22,14 @@ let exportedMethods = {
          //console.log(`looking for user with email ${email}`)
         return users().then((userCollection) => {
             return userCollection.findOne({ email: email }).then((user) => {
-                if (!user) throw "User not found";
+                if (!user) return Promise.reject("User not found");
                 return user;
             });
-        });
+        })
+         .catch((err) => 
+        {
+            console.log(err)
+        })
     },
     addUser(firstName, lastName, email, password) {
         return users().then((userCollection) => {
@@ -60,11 +64,17 @@ let exportedMethods = {
                 }
             };
             return userCollection.insertOne(newUser).then((newInsertInformation) => {
+                if (!newInsertInformation)
+                    return Promise.reject("Unable to add user");
                 return newInsertInformation.insertedId;
             }).then((newId) => {
                 return this.getUserById(newId);
             });
-        });
+        })
+        .catch((err) => 
+        {
+            console.log(err)
+        })
     },
     removeUser(id) {
         return users().then((userCollection) => {

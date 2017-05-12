@@ -50,6 +50,38 @@ passport.use('login', new LocalStrategy({
 )
 
 //don't forget to check if email is unique when you do sign up
+passport.use('signup', new LocalStrategy({
+  passReqToCallback: true,
+  usernameField: 'email',
+  passwordField: 'password'
+},
+  function (req, email, password, done) {
+    //console.log(`Firstname: ${req.body.firstname}, Lastname: ${req.body.lastname}, Email: ${req.body.email}, Password: ${req.body.password}`)
+    users.getUserByEmail(email).then((_data) => {
+        //console.log(_data)
+      if (!_data) {
+        //console.log("Email not found - trying to create a user")
+        users.addUser(req.body.firstname, req.body.lastname, email, createHash(password)).then((newuser) => {
+          //console.log("User created")
+          return done(null,
+          {
+            userID: newuser._id,
+            email: newuser._email
+          })
+        })
+      }
+      else {
+        //console.log(JSON.stringify(_data))
+        //console.log("Email already exists!")
+        return done(null, false, req.flash('message', 'Account with this email already exists'))
+      }
+    })
+    .catch((err) => {
+      return done(err)
+    })
+  })
+)
+
 var isValidPassword = function (pRaw, pHashed) {
   return bCrypt.compareSync(pRaw, pHashed)
 }
