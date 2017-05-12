@@ -5,7 +5,7 @@ const users = require('../data/users')
 
 // Passport needs to be able to serialize and deserialize users to support persistent login sessions
 passport.serializeUser(function (user, done) {
-  console.log('serializing user:', user)
+  //console.log('serializing user:', user)
   // return the unique id for the user
   done(null, user)
 })
@@ -57,11 +57,12 @@ passport.use('signup', new LocalStrategy({
 },
   function (req, email, password, done) {
     //console.log(`Firstname: ${req.body.firstname}, Lastname: ${req.body.lastname}, Email: ${req.body.email}, Password: ${req.body.password}`)
+    //console.log(`City: ${req.body.city}, State: ${req.body.state}, Country: ${req.body.country}`)
     users.getUserByEmail(email).then((_data) => {
         //console.log(_data)
       if (!_data) {
         //console.log("Email not found - trying to create a user")
-        users.addUser(req.body.firstname, req.body.lastname, email, createHash(password)).then((newuser) => {
+        users.addUser(req.body.firstname, req.body.lastname, email, createHash(password), req.body.city, req.body.state, req.body.country).then((newuser) => {
           //console.log("User created")
           return done(null,
           {

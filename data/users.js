@@ -31,7 +31,7 @@ let exportedMethods = {
             console.log(err)
         })
     },
-    addUser(firstName, lastName, email, password) {
+    addUser(firstName, lastName, email, password, city, state, country) {
         return users().then((userCollection) => {
             let newUser = {
                 _id: uuid.v4(),
@@ -40,9 +40,9 @@ let exportedMethods = {
                 email: email,
                 password: password,
                 address:{
-                    city: null,
-                    state: null,
-                    country: null
+                    city: city,
+                    state: state,
+                    country: country
                 },
                 ratings:{
                     ratingCount: 0,
