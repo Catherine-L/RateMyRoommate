@@ -19,15 +19,6 @@ router.get("/:id", (req, res) => {
     });
 });
 
-router.get("/", (req, res) => {
-    userData.getAllUsers().then((userList) => {
-        res.json(userList);
-    }, () => {
-        // Something went wrong with the server!
-        res.sendStatus(500);
-    });
-});
-
 router.post("/:id/comment", (req, res) => {
     //console.log("Adding comment");
     let errors = []

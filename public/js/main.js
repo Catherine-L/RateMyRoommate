@@ -11,7 +11,7 @@ $("#addCommentForm").submit(e => {
     };
     $.ajax({
         type: "POST",
-        url: "comment",
+        url: window.location.pathname + "/comment",
         data: JSON.stringify(formData),
         success: function(data) {
             $("#commentFormDiv").toggle(); //hide comment box
