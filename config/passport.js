@@ -25,6 +25,8 @@ passport.use('login', new LocalStrategy({
     //console.log('Hash of "password" is ' + createHash("password"));
     users.getUserByEmail(email).then((_data) => {
       //console.log(_data);
+      if(req.body.password === "" || req.body.email === "")
+        return done(null, false, req.flash('message', 'You are missing a field!'))
       if (_data) {
         if (!isValidPassword(password, _data.password)) {
           //console.log(`Invalid Password ${password}. Login failed.`)
@@ -58,6 +60,8 @@ passport.use('signup', new LocalStrategy({
   function (req, email, password, done) {
     //console.log(`Firstname: ${req.body.firstname}, Lastname: ${req.body.lastname}, Email: ${req.body.email}, Password: ${req.body.password}`)
     //console.log(`City: ${req.body.city}, State: ${req.body.state}, Country: ${req.body.country}`)
+    if(req.body.firstname === "" || req.body.lastname === "" || req.body.password === "" || req.body.email === "")
+      return done(null, false, req.flash('message', 'You are missing a field!'))
     users.getUserByEmail(email).then((_data) => {
         //console.log(_data)
       if (!_data) {
