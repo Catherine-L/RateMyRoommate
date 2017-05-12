@@ -13,7 +13,7 @@ const constructorMethod = (app) => {
     app.use('/signup', signupRoute)
     app.use('/rate', rateRoute)
     app.use('/', (req, res) => {
-        res.render('home', {user: req.user})
+        res.render('home', {loggedIn: req.user})
     })
     app.use('*', (req, res) => {
         res.status(404).json({error: 'nothing here'})
