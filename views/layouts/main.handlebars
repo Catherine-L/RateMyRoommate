@@ -16,9 +16,8 @@
         </form>
     </main>
     <nav>
-        {{#if user}}
-        <p>Hi, {{user.firstName}}</p>
-        <button type="button" onclick="window.location='/user';">Profile</button>
+        {{#if loggedIn}}
+        <button type="button" onclick="window.location='/users/{{loggedIn.userID}}';">Profile</button>
         <!-- <button type="button">Comments and Ratings</button> -->
         <button type="button">Log Out</button>
         {{else}}

@@ -10,7 +10,7 @@ router.get('/:id', (req, res) =>
     {
         userData.getUserById(req.params.id).then((user) => 
         {
-            res.render('rate', {user: user});
+            res.render('rate', {user: user, loggedIn: req.user});
         }).catch(() => 
         {
             res.status(404).json({ error: "User not found" });
