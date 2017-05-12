@@ -1,10 +1,8 @@
-<!-- copied from lecture 9 code views/calculator/static.handlebars-->
-
 <div class="body">
   <h1>Find What You Are Looking For</h1>
-  <button type="button">Find A New Roommate</button>
-  <button type="button">Find A City</button>
-  <button type="button">Rate A Previous Roommate</button>
+  <button type="button" onclick="window.location='/search';">Find A New Roommate</button>
+  <button type="button" onclick="window.location='/search';">Find A City</button>
+  <button type="button" onclick="window.location='/search';">Rate A Previous Roommate</button>
 
   {{#if user}}
   <h2>Hi user!!</h2>

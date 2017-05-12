@@ -1,31 +1,37 @@
-<!-- copied from lecture 9 code views/layouts/main.handlebars-->
-
 <!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="utf-8">
     <title>Rate My Roommate</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
-        crossorigin="anonymous">
+    <link rel="stylesheet" href="/public/css/main.css">
 </head>
 
 <body>
     <main class="header">
-          <img src="logo.png" alt="Logo" style="width:300px;height:100px;">
-          <form> <input type="text" name="search" placeholder="Search a Person or a City"> </form>
-          <button type="button">Log In / Sign Up</button>
+          <img src="http://i1146.photobucket.com/albums/o521/294771483/logo_zpsfrbkghym.png" style="width:300px;height:70px;">
+          <form> 
+              <input type="text" name="search" placeholder="Search a Person or a City"> 
+              <button type="button" onclick="window.location='/search';">Search</button>
+        </form>
     </main>
+    <nav>
+        {{#if user}}
+        <p>Hi, {{user.firstName}}</p>
+        <button type="button" onclick="window.location='/profile';">Profile</button>
+        <!-- <button type="button">Comments and Ratings</button> -->
+        <button type="button">Log Out</button>
+        {{else}}
+        <button type="button" onclick="window.location='/login';">Log In</button>
+        <button type="button" onclick="window.location='/signup';">Sign Up</button>
+        {{/if}}        
+    </nav>
 
     {{{body}}}
 
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
-        crossorigin="anonymous"></script>
     <script src="/public/js/main.js"></script>
     <footer>
-    empty footer
+    &copy Team Empty String, 2017
     </footer>
 </body>
 </html>

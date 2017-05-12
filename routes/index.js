@@ -1,11 +1,10 @@
-// copied from lecture 8 code route/index.js
-
 //const commentRoutes = require("./comments");
 const userRoutes = require("./users");
 const homeRoute = require("./home")
 const loginRoute = require("./login")
 const signupRoute = require("./signup")
 const rateRoute = require("./rate")
+const profileRoute = require("./profile")
 
 const constructorMethod = (app) => {
     //app.use("/comments", commentRoutes);
@@ -14,9 +13,14 @@ const constructorMethod = (app) => {
     app.use('/login', loginRoute)
     app.use('/signup', signupRoute)
     app.use('/rate', rateRoute)
+    app.use('/profile', profileRoute)
     app.use('/', (req, res) => {
         res.render('home', {user: req.user})
+    })
+    app.use('*', (req, res) => {
+        res.status(404).json({error: 'nothing here'})
     })
 };
 
 module.exports = constructorMethod;
+

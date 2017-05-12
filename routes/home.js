@@ -1,5 +1,3 @@
-// copied from lecture 8 code route/posts.js
-
 const express = require('express')
 const router = express.Router()
 
