@@ -35,6 +35,7 @@ let exportedMethods = {
         return users().then((userCollection) => {
             let newUser = {
                 _id: uuid.v4(),
+                isAdmin: false,
                 firstName: firstName,
                 lastName: lastName,
                 email: email,
@@ -44,6 +45,7 @@ let exportedMethods = {
                     state: state,
                     country: country
                 },
+                bio: null,
                 ratings:{
                     ratingCount: 0,
                     cleanlyAverage: 0,
@@ -85,42 +87,22 @@ let exportedMethods = {
             });
         });
     },
-    updateUser(id, firstName, lastName, email, password, city, state, country, ratingCount, cleanlyAverage, 
-    loudAverage, annoyingAverage, friendlyAverage, considerateAverage, userWhoRated_id, cleanlyRating, loudRating, 
-    annoyingRating, friendlyRating, considerateRating) {
-        return this.getUserById(id).then((currentUser) => {
-            let updatedUser = {
-                firstName: firstName,
-                lastName: lastName,
-                email: email,
-                password: password,
-                address:{
-                    city: city,
-                    state: state,
-                    country: country
-                },
-                ratings:{
-                    ratingCount: ratingCount,
-                    cleanlyAverage: cleanlyAverage,
-                    loudAverage: loudAverage,
-                    annoyingAverage: annoyingAverage,
-                    friendlyAverage: friendlyAverage,
-                    considerateAverage: considerateAverage,
-                    detail:[
-                        {
-                            userWhoRated_id: userWhoRated_id,
-                            cleanlyRating: cleanlyRating, 
-                            loudRating: loudRating, 
-                            annoyingRating: annoyingRating, 
-                            friendlyRating: friendlyRating,
-                            considerateRating: considerateRating
-                        }
-                    ]
-                }
+    updateUserProfile(id, city, state, country, bio) {
+        return users().then((userCollection) =>{
+            let addressDetails = {
+                    "city": city,
+                    "state": state,
+                    "country": country
             };
-            return userCollection.updateOne({ _id: id }, updatedUser).then(() => {
-                return this.getUserById(id);
-            });
+            
+            return userCollection.updateOne({_id: id}, {
+                $set: {
+                    "address": addressDetails,
+                    "bio": bio
+                }}).then((result) =>{
+                    if (!result)
+                    return Promise.reject("Unable to add rating");
+                });
         });
     },
     addRatingToUser(id, userWhoRatedId, cleanlyRating,loudRating,annoyingRating,friendlyRating,considerateRating)

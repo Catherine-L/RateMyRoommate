@@ -1,15 +1,39 @@
 <div class="body">
-  <h1>Profile</h1>
-  <button type="button" onclick="window.location='/profile-edit/${user._id}';">Edit Profile</button>
+  <h1>Edit Profile</h1>
   <p> First Name: {{user.firstName}} </p>
   <p> Last Name: {{user.lastName}} </p>
-  <p> Email: {{user.email}} </p>
-  <p> City: {{user.address.city}} </p>
-  <p> State: {{user.address.state}} </p>
-  <p> Country: {{user.address.country}} </p>
-  <p> Bio: {{user.bio}} </p>
+  <form class="form-horizontal" action="/profile-edit" method="post">
+    <div class="form-group">
+      <label for="email">Email: </label>
+      <input id="email" class="form-control" type="text" name="email" />
+        <br/>
+    </div>
+    <div class="form-group">
+      <label for="city">City: </label>
+      <input id="city" class="form-control" type="text" name="city" />
+        <br/>
+    </div>
+    <div class="form-group">
+      <label for="state">State: </label>
+      <input id="state" class="form-control" type="text" name="state" />
+        <br/>
+    </div>
+    <div class="form-group">
+      <label for="country">Country:</label>
+      <input id="country" class="form-control" type="text" name="country" />
+        <br/>
+    </div>
+    <div class="form-group">
+      <label for="bio">Bio:</label>
+      <input id="bio" class="form-control" type="text" name="bio" />
+        <br/>
+    </div>
+    <div class="form-group">
+      <input class="form-control" type="submit" value="Submit" />
+    </div>
+  </form>
+  
   <h2>Ratings</h2>
-
     {{#each user.ratings as |value key|}}
       {{#ifCond key '!=' "detail"}} <!-- details are not shown to users, internal use only -->
         <p>{{key}}: {{value}} </p>
