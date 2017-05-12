@@ -3,7 +3,7 @@ const router = express.Router();
 const passport = require('../config/passport');
 
 router.get('/', (req, res) => {
-  res.render('signup', {message: req.flash('message')})
+  res.render('signup', {message: req.flash('message'), loggedIn: req.user})
 });
 
 router.post('/',

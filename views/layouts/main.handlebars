@@ -17,11 +17,10 @@
         </form>
     </main>
     <nav>
-        {{#if user}}
-        <p>Hi, {{user.firstName}}</p>
-        <button type="button" onclick="window.location='/user';">Profile</button>
+        {{#if loggedIn}}
+        <button type="button" onclick="window.location='/users/{{loggedIn.userID}}';">Profile</button>
         <!-- <button type="button">Comments and Ratings</button> -->
-        <button type="button">Log Out</button>
+        <button type="button" onclick="window.location='/logout';">Log Out</button>
         {{else}}
         <button type="button" onclick="window.location='/login';">Log In</button>
         <button type="button" onclick="window.location='/signup';">Sign Up</button>
@@ -30,6 +29,7 @@
 
     {{{body}}}
 
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
     <script src="/public/js/main.js"></script>
     <footer>
     &copy Team Empty String, 2017

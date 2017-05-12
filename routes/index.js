@@ -15,7 +15,7 @@ const constructorMethod = (app) => {
     app.use('/rate', rateRoute)
     app.use('/profile-edit', profileEditRoute)
     app.use('/', (req, res) => {
-        res.render('home', {user: req.user})
+        res.render('home', {loggedIn: req.user})
     })
     app.use('*', (req, res) => {
         res.status(404).json({error: 'nothing here'})

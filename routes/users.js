@@ -9,7 +9,6 @@ router.get("/:id", (req, res) => {
     userData.getUserById(req.params.id).then((user) => {
         commentData.getCommentsByUser(req.params.id).then((comments) => {
             //console.log("getting user " + comments);
-            //console.log(req.user);
             res.render('user', {user: user, comments: comments, loggedIn: req.user});
         }).catch(() => {
             //console.log("getting user comments failed");
@@ -20,16 +19,8 @@ router.get("/:id", (req, res) => {
     });
 });
 
-router.get("/", (req, res) => {
-    userData.getAllUsers().then((userList) => {
-        res.json(userList);
-    }, () => {
-        // Something went wrong with the server!
-        res.sendStatus(500);
-    });
-});
-
 router.post("/:id/comment", (req, res) => {
+    //console.log("Adding comment");
     let errors = []
     if(!req.user)
         errors.push("You're not logged in. Hacker.");
