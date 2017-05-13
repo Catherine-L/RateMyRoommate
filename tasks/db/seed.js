@@ -20,7 +20,7 @@ fs.readFile(__dirname + "/mock/users.json", (err, data) => {
 fs.readFile(__dirname + "/mock/comments.json", (err, data) => {
 
     let commentsArr = JSON.parse(data);
-    console.log(JSON.parse(data))
+    //console.log(JSON.parse(data))
 
     if(!commentsArr || commentsArr.length < 1) return;
 

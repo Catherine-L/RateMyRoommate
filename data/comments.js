@@ -24,7 +24,7 @@ let exportedMethods = {
             return commentCollection.find({userWhoCommentIsFor_id: userId.toString() }).toArray();
         });
     },
-    addComment(userWhoCommented_id, userWhoCommentIsFor_id, comment, userFlagged_id, flagReason) {
+    addComment(userWhoCommented_id, userWhoCommentIsFor_id, comment) {
         return comments().then((commentCollection) => {
             let newComment = {
                 _id: uuid.v4(),
@@ -32,12 +32,7 @@ let exportedMethods = {
                 userWhoCommentIsFor_id: userWhoCommentIsFor_id,
                 date: new Date(),
                 comment: comment,
-                spam:[
-                    {
-                        userFlagged_id: userFlagged_id,
-                        flagReason: flagReason
-                    }
-                ]
+                spam:[]
             };
             return commentCollection.insertOne(newComment).then((newInsertInformation) => {
                 return newInsertInformation.insertedId;
@@ -104,6 +99,18 @@ let exportedMethods = {
         return comments().then((commentCollection) =>
         {
             return commentCollection.find({spam: {$gt: []}}).toArray()
+        })
+    },
+    removeSpamFlagFromComment(id)
+    {
+        return comments().then((commentCollection) =>
+        {
+            return commentCollection.update({_id: id}, {$set: {spam: []}}).then((result) =>
+            {
+                if (!result)
+                    return Promise.reject("Problem unflagging comment as spam");
+                return this.getCommentById(id);
+            })
         })
     }
 }

@@ -26,4 +26,10 @@ router.post('/delete/:id', (req, res) => {
   })
 })
 
+router.post('/unflag/:id', (req, res) => {
+  comments.removeSpamFlagFromComment(req.params.id).then((_data) => {
+    console.log(_data)
+    res.redirect('/manage')
+  })
+})
 module.exports = router;

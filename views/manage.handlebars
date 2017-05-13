@@ -6,7 +6,10 @@
   <p>{{flagReason}}</p>
   {{/each}}
   <form action="/manage/delete/{{_id}}" method="post">
-    <input class="btn btn-default" type="submit" value="Delete Comment" onclick="return confirmationScript()"/> 
+    <input class="btn btn-default" type="submit" value="Delete Comment"/> 
+  </form>
+  <form action="/manage/unflag/{{_id}}" method="post">
+    <input class="btn btn-default" type="submit" value="Unflag Comment"/> 
   </form>
 {{/each}}
 {{/if}}
