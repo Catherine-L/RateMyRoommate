@@ -10,6 +10,7 @@ router.get('/', (req, res) => {
         //console.log(comments)
          res.render('manage',
           {
+            loggedIn: req.user,
             isAdmin: req.user.isAdmin,
             comments: comments
           })
@@ -28,6 +29,7 @@ router.post('/delete/:id', (req, res) => {
 })
 
 router.post('/unflag/:id', (req, res) => {
+  //console.log(req.params.id)
   comments.removeSpamFlagFromComment(req.params.id).then((_data) => {
     //console.log(_data)
     res.json({success: true})

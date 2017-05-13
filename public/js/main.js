@@ -26,12 +26,13 @@ $("#addCommentForm").submit(e => {
         dataType: "json"
     });
 });
-
-$("#deleteSpam").submit(e => {
-    e.preventDefault();
-    var comment = $("#commentID").val()
-    const formData = {
-        comment: $("#deleteSpam").val()
+$(document).on("click", "[data-trigger='delete']", function (evt) {
+  var commentID = $(this).prev().data("comment");
+  console.log(commentID) //index number, can be pretty much anything
+  var comment = $(this).prev().val();
+  console.log(comment)
+  const formData = {
+        comment: $(".deleteSpam").val()
     };
     if (confirm("Are you sure you want to delete this comment?"))
     {
@@ -40,11 +41,11 @@ $("#deleteSpam").submit(e => {
             url: window.location.pathname + "/delete/" + comment,
             data: JSON.stringify(formData),
             success: function(data) {
-                $("#adminOptions").hide();
+                $(`*[data-adminoptions="${commentID}"]`).hide();
                 if(!data.success)
-                    $("#adminResponse").text("An error has occured but not been reported");
+                    $(`*[data-adminresponse="${commentID}"]`).text("An error has occured but not been reported");
                 else
-                    $("#adminResponse").text("This comment has been deleted");
+                    $(`*[data-adminresponse="${commentID}"]`).text("This comment has been deleted");
             },
             contentType: "application/json",
             dataType: "json"
@@ -52,11 +53,13 @@ $("#deleteSpam").submit(e => {
     }
 });
 
-$("#unflagSpam").submit(e => {
-    e.preventDefault();
-    var comment = $("#commentID").val()
-    const formData = {
-        comment: $("unflagSpam").val()
+$(document).on("click", "[data-trigger='unflag']", function (evt) {
+  var commentID = $(this).prev().data("comment");
+  //console.log(commentID) //index number, can be pretty much anything
+  var comment = $(this).prev().val();
+  //console.log(comment)
+  const formData = {
+        comment: $(".unflagSpam").val()
     };
     if (confirm("Are you sure you want to unflag this comment?"))
     {
@@ -65,11 +68,11 @@ $("#unflagSpam").submit(e => {
             url: window.location.pathname + "/unflag/" + comment,
             data: JSON.stringify(formData),
             success: function(data) {
-                $("#adminOptions").hide();
+                $(`*[data-adminoptions="${commentID}"]`).hide();
                 if(!data.success)
-                    $("#adminResponse").text("An error has occured but not been reported");
+                    $(`*[data-adminresponse="${commentID}"]`).text("An error has occured but not been reported");
                 else
-                    $("#adminResponse").text("This comment has been unflagged as spam");
+                    $(`*[data-adminresponse="${commentID}"]`).text("This comment has been unflagged");
             },
             contentType: "application/json",
             dataType: "json"
