@@ -9,7 +9,8 @@ router.get("/:id", (req, res) => {
     userData.getUserById(req.params.id).then((user) => {
         commentData.getCommentsByUser(req.params.id).then((comments) => {
             //console.log("getting user " + comments);
-            res.render('user', {user: user, comments: comments, loggedIn: req.user});
+           res.render('user', {user: user, comments: comments, loggedIn: req.user});
+           //res.json(comments);
         }).catch(() => {
             //console.log("getting user comments failed");
             res.render('user', {user: user, comments: [], loggedIn: req.user});
@@ -122,6 +123,18 @@ router.delete("/:id", (req, res) => {
 
     }).catch(() => {
         res.status(404).json({ error: "User not found" });
+    });
+});
+
+router.post("/:userId/comments/:commentId/flag", (req, res) =>
+{
+    let flagInfo = req.body;
+    commentData.addSpamFlagToComment(req.params.commentId, req.user.userID, req.body.reason).then((updatedCommentData) =>
+    {
+        res.json({success: true, errors: []});
+    }).catch((e) =>
+    {
+        res.status(500).json({ success: false, errors: e }); 
     });
 });
 

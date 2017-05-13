@@ -26,3 +26,36 @@ $("#addCommentForm").submit(e => {
         dataType: "json"
     });
 });
+
+$(".flagCommentFormDiv").hide();
+
+$(".flagCommentButton").click(function() {
+    $(this).parent().find(".flagCommentFormDiv").toggle();
+});
+
+$(".flagCommentForm").submit(e => {
+    e.preventDefault();
+    let flaggedCommentID = $(".flaggedCommentID").val();
+    const formData = {
+        reason: $(".flagCommentBox").val()
+    };
+    $.ajax({
+        type: "POST",
+        url: window.location.pathname + "/comments/"+flaggedCommentID+"/flag/",
+        data: JSON.stringify(formData),
+        success: function(data) {
+            $(".flagCommentFormDiv").hide();
+            if(data.errors.length > 0)
+                $(".flagCommentFormResponse").text(data.errors[0]);
+                //$(this).parent().parent().find(".flagCommentFormResponse").text(data.errors[0]);
+            else if(!data.success)
+                 $(".flagCommentFormResponse").text("An error has occured but not been reported");
+                 //$(this).parent().parent().find(".flagCommentFormResponse").text("An error has occured but not been reported");
+            else
+                $(".flagCommentFormResponse").text("You have reported this comment as spam");
+                //$(this).parent().parent().find(".flagCommentFormResponse").text("You have reported this comment as spam");
+        },
+        contentType: "application/json",
+        dataType: "json"
+    });
+});
