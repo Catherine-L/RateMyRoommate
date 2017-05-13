@@ -87,30 +87,50 @@ let exportedMethods = {
             });
         });
     },
-    updateUserProfile(id, city, state, country, bio) {
+    updateUserProfile(id, firstName, lastName, email, city, state, country, bio) {
         return users().then((userCollection) =>{
-            let addressDetails = {
-                    "city": city,
-                    "state": state,
-                    "country": country
-            };
-            
-            return userCollection.updateOne({_id: id}, {
-                $set: {
-                    "address": addressDetails,
-                    "bio": bio
-                }}).then((result) =>{
-                    if (!result)
-                    return Promise.reject("Unable to add rating");
-                });
+            let updatedUserData = {};
+
+    		if(firstName) {
+    			updatedUserData.firstName = firstName;
+    		}
+    		if(lastName) {
+    			updatedUserData.lastName = lastName;
+    		}
+    		if(email) {
+    			updatedUserData.email = email;
+    		}
+    		if(city||state||country) {
+                updatedUserData.address = {};
+                if(city){
+                    updatedUserData.address.city = city;
+                }
+    			if(state) {
+                    updatedUserData.address.state = state;
+                }
+                if(country) {
+                    updatedUserData.address.country = country;
+                }
+    		}
+    		if(bio) {
+    			updatedUserData.bio = bio;
+    		}
+    		let updateCommand = {
+    			$set: updatedUserData
+    		};
+
+    		return userCollection.updateOne({_id: id}, updateCommand).then((result) => {
+                if (!result){
+                    return Promise.reject("Unable to update Profile");
+                }
+    			return this.getUserById(id);
+    		});
         });
     },
     addRatingToUser(id, userWhoRatedId, cleanlyRating,loudRating,annoyingRating,friendlyRating,considerateRating)
     {
-        return users().then((userCollection) =>
-        {
-            let ratingDetails = 
-            {
+        return users().then((userCollection) =>{
+            let ratingDetails = {
                 userWhoRated_id: userWhoRatedId,
                 cleanlyRating: cleanlyRating, 
                 loudRating: loudRating, 
@@ -118,14 +138,11 @@ let exportedMethods = {
                 friendlyRating: friendlyRating,
                 considerateRating: considerateRating
             };
-
-            return userCollection.update({_id: id}, {$push: {"ratings.detail": ratingDetails}}).then((result) =>
-            {
+            return userCollection.update({_id: id}, {$push: {"ratings.detail": ratingDetails}}).then((result) =>{
                 if (!result)
                     return Promise.reject("Unable to add rating");
                
-                return this.getUserById(id).then((user) =>
-                {
+                return this.getUserById(id).then((user) =>{
                     let detail = user.ratings.detail;
                     let ratingCount = 0;
                     let cleanlyAverage = 0;
@@ -134,8 +151,7 @@ let exportedMethods = {
                     let friendlyAverage = 0;
                     let considerateAverage = 0;
 
-                    for (i in detail)
-                    {
+                    for (i in detail){
                         ratingCount++;
                         cleanlyAverage += parseInt(detail[i].cleanlyRating);
                         loudAverage += parseInt(detail[i].loudRating);
