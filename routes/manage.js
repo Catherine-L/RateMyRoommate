@@ -21,15 +21,16 @@ router.get('/', (req, res) => {
 });
 
 router.post('/delete/:id', (req, res) => {
+  //console.log(req.params.id)
   comments.removeComment(req.params.id).then((_data) => {
-    res.redirect('/manage')
+    res.json({success: true})
   })
 })
 
 router.post('/unflag/:id', (req, res) => {
   comments.removeSpamFlagFromComment(req.params.id).then((_data) => {
-    console.log(_data)
-    res.redirect('/manage')
+    //console.log(_data)
+    res.json({success: true})
   })
 })
 module.exports = router;

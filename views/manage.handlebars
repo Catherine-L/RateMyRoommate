@@ -1,15 +1,22 @@
 {{#if isAdmin}}
 <h2>Flagged as Spam</h2>
 {{#each comments}}
-<p>{{comment}}</p> 
+<p>Comment: {{comment}}</p>
+  <ul>
   {{#each spam}}
-  <p>{{flagReason}}</p>
+    <li>{{flagReason}}</li>
   {{/each}}
-  <form action="/manage/delete/{{_id}}" method="post">
-    <input class="btn btn-default" type="submit" value="Delete Comment"/> 
-  </form>
-  <form action="/manage/unflag/{{_id}}" method="post">
-    <input class="btn btn-default" type="submit" value="Unflag Comment"/> 
-  </form>
+  </ul>
+  <div id="adminOptions">
+    <form action="/manage/delete/{{_id}}" id="deleteSpam" method="post">
+      <input id="commentID" type="hidden" value="{{_id}}">
+      <input class="btn btn-default" type="submit" value="Delete Comment"/> 
+    </form>
+    <form action="/manage/unflag/{{_id}}" id="unflagSpam" method="post">
+      <input id="commentID" type="hidden" value="{{_id}}">
+      <input class="btn btn-default" type="submit" value="Unflag Comment"/> 
+    </form>
+  </div>
+  <p id="adminResponse"></p>
 {{/each}}
 {{/if}}

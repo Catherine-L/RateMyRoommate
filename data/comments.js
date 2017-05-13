@@ -42,6 +42,7 @@ let exportedMethods = {
         });
     },
     removeComment(id) {
+        console.log(`ID of comment to delete is ${id}`)
         return comments().then((commentCollection) => {
             return commentCollection.removeOne({ _id: id }).then((deletionInfo) => {
                 if (deletionInfo.deletedCount === 0) {
