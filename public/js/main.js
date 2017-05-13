@@ -35,16 +35,20 @@ $(".flagCommentButton").click(function() {
 
 $(".flagCommentForm").submit(e => {
     e.preventDefault();
-    let flaggedCommentID = $(".flaggedCommentID").val();
+    let flaggedCommentID = $(this).find(".flaggedCommentID").val();
     const formData = {
-        reason: $(".flagCommentBox").val()
+        reason: $(this).parent().find(".flagCommentBox").val()
     };
+    var $t = $(this);
+     $(this).parent().find(".test").text("this works with this");
     $.ajax({
         type: "POST",
         url: window.location.pathname + "/comments/"+flaggedCommentID+"/flag/",
         data: JSON.stringify(formData),
         success: function(data) {
-            $(".flagCommentFormDiv").hide();
+            //$(".flagCommentFormDiv").hide();
+           // $t.closest(".flagCommentFormDiv").hide();
+           $t.parent().find(".test").text("this works");
             if(data.errors.length > 0)
                 $(".flagCommentFormResponse").text(data.errors[0]);
                 //$(this).parent().parent().find(".flagCommentFormResponse").text(data.errors[0]);

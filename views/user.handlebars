@@ -32,7 +32,9 @@
     <div>
       <p> Date: {{date}} </p>
       <p> {{comment}} </p>
-
+        {{#if spam}}
+        <p>Flagged as spam</p>
+        {{/if}}
         {{#if ../loggedIn}}
         <button type="button" class="flagCommentButton">Flag Comment</button>
           <div class="flagCommentFormDiv" id="flagCommentFormDiv">
@@ -40,7 +42,8 @@
           <form class="flagCommentForm" id="flagCommentForm">
             <input type="hidden" class="flaggedCommentID" id="flaggedCommentID" name="commentId" value={{_id}}>            
             <button type="submit"> Submit </button>
-          </form>     
+          </form>    
+          <p class="test"></p>
         </div>
         <p class="flagCommentFormResponse" id="flagCommentFormResponse"></p>
         {{/if}}
