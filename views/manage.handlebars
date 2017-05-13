@@ -1,0 +1,12 @@
+{{#if isAdmin}}
+<h2>Flagged as Spam</h2>
+{{#each comments}}
+<p>{{comment}}</p> 
+  {{#each spam}}
+  <p>{{flagReason}}</p>
+  {{/each}}
+  <form action="/manage/delete/{{_id}}" method="post">
+    <input class="btn btn-default" type="submit" value="Delete Comment" onclick="return confirmationScript()"/> 
+  </form>
+{{/each}}
+{{/if}}

@@ -103,7 +103,7 @@ let exportedMethods = {
     {
         return comments().then((commentCollection) =>
         {
-            return commentCollection.find({spam: {$size: 0}}).toArray()
+            return commentCollection.find({spam: {$gt: []}}).toArray()
         })
     }
 }
