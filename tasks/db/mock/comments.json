@@ -1,0 +1,17 @@
+[
+  {
+    "_id": "101",
+    "userWhoCommented_id": "2",
+    "userWhoCommentIsFor_id": "1",
+    "date": null,
+    "comment": "you're a turd",
+
+    "spam": 
+    [
+      {
+        "userWhoFlaggedID": "1",
+        "flagReason": "no YOU'RE the turd"
+      }
+    ]
+  }
+]

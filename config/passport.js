@@ -22,7 +22,7 @@ passport.use('login', new LocalStrategy({
 },
   function (req, email, password, done) {
     //console.log(`Searching for ${email} with ${password}`);
-    //console.log('Hash of "password" is ' + createHash("password"));
+    console.log('Hash of "password" is ' + createHash(password));
     users.getUserByEmail(email).then((_data) => {
       //console.log(_data);
       if(req.body.password === "" || req.body.email === "")
@@ -71,7 +71,7 @@ passport.use('signup', new LocalStrategy({
           return done(null,
           {
             userID: newuser._id,
-            email: newuser._email
+            email: newuser.email
           })
         })
       }

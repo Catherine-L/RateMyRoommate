@@ -98,6 +98,13 @@ let exportedMethods = {
                 return this.getCommentById(id);
             });
         });
+    },
+    getAllSpamComments()
+    {
+        return comments().then((commentCollection) =>
+        {
+            return commentCollection.find({spam: {$size: 0}}).toArray()
+        })
     }
 }
 

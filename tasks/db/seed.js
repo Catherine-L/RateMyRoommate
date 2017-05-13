@@ -16,15 +16,15 @@ fs.readFile(__dirname + "/mock/users.json", (err, data) => {
 
 
 /* Insert mock comments */
-/* TODO: add mock comments to mock/comments.json
+/* TODO: add mock comments to mock/comments.json*/
 fs.readFile(__dirname + "/mock/comments.json", (err, data) => {
 
-    let comments = JSON.parse(data);
+    let commentsArr = JSON.parse(data);
+    console.log(JSON.parse(data))
 
-    if(!comments || comments.length < 1) return;
+    if(!commentsArr || commentsArr.length < 1) return;
 
-    users().then(collection => collection.insertMany(comments));
+    comments().then(collection => collection.insertMany(commentsArr));
 });
-*/
 
 

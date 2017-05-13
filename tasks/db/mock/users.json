@@ -1,6 +1,7 @@
 [
   {
     "_id": "1",
+    "isAdmin": false,
     "firstName": "Fred",
     "lastName": "Blob",
     "email": "fake@email.com",
@@ -10,7 +11,7 @@
       "state": "NJ",
       "country": "US"
     },
-
+    "bio": null,
     "ratings":{
       "ratingCount": 2,
       "cleanlyAverage": 2,
@@ -42,6 +43,7 @@
 
   {
     "_id": "2",
+    "isAdmin": false,
     "firstName": "Jess",
     "lastName": "Peterson",
     "email": "jp@email.com",
@@ -51,7 +53,7 @@
       "state": "NJ",
       "country": "US"
     },
-
+    "bio": null,
     "ratings":{
       "ratingCount": 2,
       "cleanlyAverage": 3,
@@ -83,6 +85,7 @@
 
   {
     "_id": "3",
+    "isAdmin": false,
     "firstName": "Chad",
     "lastName": "Lowe",
     "email": "cl@email.com",
@@ -92,7 +95,7 @@
       "state": "NJ",
       "country": "US"
     },
-
+    "bio": null,
     "ratings":{
       "ratingCount": 2,
       "cleanlyAverage": 1,
@@ -120,5 +123,14 @@
         }
       ]
     }
+  },
+
+  {
+    "_id": "4",
+    "isAdmin": true,
+    "firstName": "Admin",
+    "lastName": "McAdminister",
+    "email": "admin@email.com",
+    "password": "$2a$10$0JLvA0OUrBESODen7Rrx6.YByK5y7DGRcXwbwVwgD8wDq9Bg4iX5"
   }
 ]
