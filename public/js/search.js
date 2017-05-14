@@ -46,8 +46,6 @@ function handleReceivedUsers(users) {
     var $searchResultsTableBody = $searchResultsTable.find(".table-body");
     var $noResultsFound = $(".no-search-results");
 
-    var usersHtmlStr = "";
-
     $searchResultsTableBody.html(""); // clear the table body's html
 
     users.forEach(function(user) {
@@ -57,10 +55,8 @@ function handleReceivedUsers(users) {
         var city = user.address.city;
         var state = user.address.state;
 
-        usersHtmlStr += userRow(id, name, city, state);
+        $searchResultsTableBody.append(userRow(id, name, city, state));
     });
-
-    $searchResultsTableBody.append(usersHtmlStr);
 
     if(users.length > 0) {
 
@@ -74,20 +70,18 @@ function handleReceivedUsers(users) {
     }
 
     function userRow(id, name, city, state) {
-        return "<tr class='user-row'>" +
-            "<td class='user-row-name'>" +
-            name +
-            "</td>" +
-            "<td class='user-row-city'>" +
-            city +
-            "</td>" +
-            "<td class='user-row-state'>" +
-            state +
-            "</td>" +
-            "<td class='user-row-select'>" +
-            "<a href='" + "/users/" + id + "' class='select-user'>Select</a>" +
-            "</td>" +
-            "</tr>";
+
+        var tr = $("<tr class='user-row'>");
+        var a = $("<a class='select-user'>Select</a>");
+
+        tr.append($("<td class='user-row-name'>").text(name));
+        tr.append($("<td class='user-row-city'>").text(city));
+        tr.append($("<td class='user-row-state'>").text(state));
+
+        a.attr("href", "/users/" + id);
+        tr.append($("<td class='user-row-select'>").append(a));
+
+        return tr;
     }
 }
 

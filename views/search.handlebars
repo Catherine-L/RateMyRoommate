@@ -7,7 +7,7 @@
         <form action="" id="name-search-form">
 
             <label for="search-name">Name:</label>
-            <input type="text" id="name-search-name" name="search-name">
+            <input type="text" id="name-search-name" name="search-name" required pattern="[A-Za-z\s\-']+">
 
             <button type="submit">Search</button>
 
@@ -18,10 +18,10 @@
         <form action="" id="location-search-form">
 
             <label for="search-city">City:</label>
-            <input type="text" id="location-search-city" name="search-city">
+            <input type="text" id="location-search-city" name="search-city" required pattern="[A-Za-z\s\-']+">
 
             <label for="search-state">State:</label>
-            <input type="text" id="location-search-state" name="search-state">
+            <input type="text" id="location-search-state" name="search-state" required pattern="[A-Za-z]{2}" maxlength="2">
 
             <button type="submit">Search</button>
 
