@@ -9,23 +9,52 @@ $("#addCommentForm").submit(e => {
     const formData = {
         comment: $("#addCommentBox").val()
     };
-    $.ajax({
-        type: "POST",
-        url: window.location.pathname + "/comment",
-        data: JSON.stringify(formData),
-        success: function(data) {
-            $("#commentFormDiv").toggle(); //hide comment box
-            if(data.errors.length > 0)
-                $("#commentFormResponse").text(data.errors[0]);
-            else if(!data.success)
-                $("#commentFormResponse").text("An error has occured but not been reported");
-            else
-                $("#commentFormResponse").text("Your comment has been submitted");
-        },
-        contentType: "application/json",
-        dataType: "json"
-    });
+    if (confirm("Are you sure you want to add this comment?"))
+    {
+        $.ajax({
+            type: "POST",
+            url: window.location.pathname + "/comment",
+            data: JSON.stringify(formData),
+            success: function(data) {
+                $("#commentFormDiv").toggle(); //hide comment box
+                if(data.errors.length > 0)
+                    $("#commentFormResponse").text(data.errors[0]);
+                else if(!data.success)
+                    $("#commentFormResponse").text("An error has occured but not been reported");
+                else
+                    $("#commentFormResponse").text("Your comment has been submitted");
+            },
+            contentType: "application/json",
+            dataType: "json"
+        });
+    }
 });
+$("#ratingForm").submit(e => {
+    e.preventDefault();
+    
+    const id = $("#ratingUserID").val()
+    const ratingData = {
+        cleanlyRating: $("#cleanlyRating").val(),
+        loudRating: $("#loudRating").val(),
+        annoyingRating: $("#annoyingRating").val(),
+        friendlyRating: $("#friendlyRating").val(),
+        considerateRating: $("#considerateRating").val(),
+    };
+    if (confirm("Are you sure you want to add these ratings?"))
+    {
+        $.ajax({
+            type: "POST",
+            url: window.location.pathname,
+            data: JSON.stringify(ratingData),
+            success: function(data) {
+                window.location=`/users/${id}`
+            },
+            contentType: "application/json",
+            dataType: "json"
+        });
+    }
+});
+
 $(document).on("click", "[data-trigger='delete']", function (evt) {
   var commentID = $(this).prev().data("comment");
   console.log(commentID) //index number, can be pretty much anything

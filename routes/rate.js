@@ -27,7 +27,7 @@ router.post('/:id', (req, res) =>
     userData.addRatingToUser(req.params.id, req.user.userID, ratingData.cleanlyRating, ratingData.loudRating, 
         ratingData.annoyingRating, ratingData.friendlyRating, ratingData.considerateRating).then((updatedUserData) =>
         {
-            res.redirect(`/users/${updatedUserData._id}`);
+            res.json({success: true})
         }).catch((e) =>
         {
            res.status(500).json({ error: e }); 

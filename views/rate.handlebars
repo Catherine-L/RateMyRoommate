@@ -2,6 +2,8 @@
 
 <form id="ratingForm" method="POST">
 
+    <input id="ratingUserID" type="hidden" value={{user._id}}>
+
     <label for="cleanlyRating">Cleanliness</label>
     <input id = "cleanlyRating" name="cleanlyRating" type="range" min="1" max = "5" />
 
