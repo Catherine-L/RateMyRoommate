@@ -108,3 +108,37 @@ $(document).on("click", "[data-trigger='unflag']", function (evt) {
         });
     }
 });
+
+$(".flagCommentDiv").hide();
+
+$(".flagCommentButton").click(function() {
+    console.log($(this))
+    $(this).parent().find(".flagCommentDiv").toggle();
+});
+
+$(".flagCommentForm").submit(function(e) {
+    e.preventDefault();
+    let flaggedCommentID = $(this).find(".flaggedCommentID").val();
+    
+    const formData = {
+        reason: $(this).parent().find(".flagCommentBox").val()
+    };
+    var $this = $(this);
+    $.ajax({
+        type: "POST",
+        url: window.location.pathname + "/comments/"+flaggedCommentID+"/flag/",
+        data: JSON.stringify(formData),
+        success: function(data) {
+            console.log($this.closest(".flagCommentDiv"));
+            $this.closest(".flagCommentDiv").hide();
+            if(data.errors.length > 0)
+                $this.parent().parent().find(".flagCommentFormResponse").text(data.errors[0]);
+            else if(!data.success)
+                 $this.parent().parent().find(".flagCommentFormResponse").text("An error has occured but not been reported");
+            else
+                $this.parent().parent().find(".flagCommentFormResponse").text("You have reported this comment as spam");
+        },
+        contentType: "application/json",
+        dataType: "json"
+    });
+});

@@ -19,10 +19,12 @@
       {{/ifCond}}
     {{/each}}
     {{#if loggedIn}}
+      {{#ifCond loggedIn.userID  '!=' user._id}}
       <p> Have you lived with this person? </p>
       <form id="addRating" method="get" action="/rate/{{user._id}}">
         <button type ="submit">Rate This Roommate</button>
       </form>
+      {{/ifCond}}
     {{/if}}
   
   <h2>Comments</h2>
@@ -31,7 +33,20 @@
     <div>
       <p> Date: {{date}} </p>
       <p> {{comment}} </p>
-        <button type="button">Flag Comment</button>
+        {{#if spam}}
+        <p>Flagged as spam</p>
+        {{/if}}
+        {{#if ../loggedIn}}
+        <button type="button" class="flagCommentButton">Flag Comment</button>
+          <div class="flagCommentDiv" id="flagCommentDiv">
+          <textarea form="flagCommentForm" class="flagCommentBox" id="flagCommentBox"></textarea>
+          <form class="flagCommentForm" id="flagCommentForm">
+            <input type="hidden" class="flaggedCommentID" id="flaggedCommentID" name="commentId" value={{_id}}>            
+            <button type="submit"> Submit </button>
+          </form>    
+        </div>
+        <p class="flagCommentFormResponse" id="flagCommentFormResponse"></p>
+        {{/if}}
     </div>
   {{else}}
     <p>No comments</p>
