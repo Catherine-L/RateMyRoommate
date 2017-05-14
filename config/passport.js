@@ -88,37 +88,6 @@ passport.use('signup', new LocalStrategy({
   })
 )
 
-//don't forget to check if email is unique when you update profile
-passport.use('profile-edit', new LocalStrategy({
-  passReqToCallback: true,
-  userIdField: '_id',
-  passwordField: 'password'
-},
-function (req, id, password, done) {
-    users.getUserById(id).then((_data) => {
-      if (!_data) {
-        //console.log("Email not found - trying to update user info")
-        users.UpdateUserProfile(req.body._id, req.body.firstName, req.body.lastName, req.body.email, req.body.city, req.body.state, req.body.country, req.body.bio).then((updatedUser) => {
-          //console.log("User updated")
-          return done(null,
-          {
-            userID: updatedUser._id,
-            email: updatedUser.email
-          })
-        })
-      }
-      else {
-        //console.log(JSON.stringify(_data))
-        //console.log("Email already exists!")
-        return done(null, false, req.flash('message', 'Account with this email already exists'))
-      }
-    })
-    .catch((err) => {
-      return done(err)
-    })
-  })
-)
-
 var isValidPassword = function (pRaw, pHashed) {
   return bCrypt.compareSync(pRaw, pHashed)
 }

@@ -3,14 +3,18 @@ const router = express.Router();
 const userData = require("../data/users");
 
 router.get('/:id', (req, res) =>{
-    if (!req.user) //not logged in
-        res.status(400).json({ error: "You must be logged in to edit your profile." });
-    else{
-        userData.getUserById(req.params.id).then((user) => {
-            res.render('profile-edit', {user: user, loggedIn: req.user});
-        }).catch(() => {
-            res.status(404).json({ error: "User not found" });
-        });
+    if (req.user) //not logged in
+    {
+        if(req.user.userID === req.params.id) {
+            userData.getUserById(req.params.id).then((user) => {
+                res.render('profile-edit', {user: user, loggedIn: req.user});
+            }).catch(() => {
+                res.status(404).json({ error: "User not found" });
+            });
+        }
+    }
+    else {
+        res.render('profile-edit')
     }
 });
 

@@ -7,14 +7,37 @@ const commentData = require("../data/comments");
 
 router.get("/:id", (req, res) => {
     userData.getUserById(req.params.id).then((user) => {
-        commentData.getCommentsByUser(req.params.id).then((comments) => {
-            //console.log("getting user " + comments);
-           res.render('user', {user: user, comments: comments, loggedIn: req.user});
-           //res.json(comments);
-        }).catch(() => {
-            //console.log("getting user comments failed");
-            res.render('user', {user: user, comments: [], loggedIn: req.user});
-        });
+        if(req.user)
+        {
+            if(req.user.userID === req.params.id)
+            {
+                commentData.getCommentsByUser(req.params.id).then((comments) => {
+                    res.render('user', {myprofile:req.user, user: user, comments: comments, loggedIn: req.user});
+                    //res.json(comments);
+                    }).catch(() => {
+                        //console.log("getting user comments failed");
+                        res.render('user', {user: user, comments: [], loggedIn: req.user});
+                    })
+            }
+            else {
+                commentData.getCommentsByUser(req.params.id).then((comments) => {
+                    res.render('user', {user: user, comments: comments, loggedIn: req.user});
+                    //res.json(comments);
+                }).catch(() => {
+                    //console.log("getting user comments failed");
+                    res.render('user', {user: user, comments: [], loggedIn: req.user});
+                })
+            }
+        }
+        else {
+            commentData.getCommentsByUser(req.params.id).then((comments) => {
+                res.render('user', {user: user, comments: comments});
+                //res.json(comments);
+            }).catch(() => {
+                //console.log("getting user comments failed");
+                res.render('user', {user: user, comments: []});
+            })
+        } 
     }).catch(() => {
         res.status(404).json({ error: "User not found" });
     });

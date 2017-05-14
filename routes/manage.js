@@ -15,6 +15,9 @@ router.get('/', (req, res) => {
             comments: comments
           })
       })
+      .catch(() => {
+        res.status(404).json({ error: "User not found" });
+      });
     }
   } else {
     res.render('manage')
@@ -34,5 +37,8 @@ router.post('/unflag/:id', (req, res) => {
     //console.log(_data)
     res.json({success: true})
   })
+  .catch(() => {
+    res.status(404).json({ error: "User not found" });
+  });
 })
 module.exports = router;
