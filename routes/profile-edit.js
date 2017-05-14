@@ -17,8 +17,8 @@ router.get('/:id', (req, res) =>{
 router.post('/:id', (req, res) =>{
     let newProfileInfo = req.body; 
     console.log(req.body);
-    userData.updateUserProfile(req.params.id, newProfileInfo.email, newProfileInfo.city, newProfileInfo.state, newProfileInfo.country).then((updatedUserData) =>{
-            res.redirect(`/users/${req.params.id}`);
+    userData.updateUserProfile(req.params.id, newProfileInfo.firstName, newProfileInfo.lastName, newProfileInfo.email,newProfileInfo.city, newProfileInfo.state, newProfileInfo.country, newProfileInfo.bio).then((updatedUserData) =>{
+            res.redirect(`/users/${updatedUserData._id}`);
         }).catch((e) =>{
            res.status(500).json({ error: e }); 
         });

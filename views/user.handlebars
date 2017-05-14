@@ -1,5 +1,6 @@
 <div class="body">
   <h1>Profile</h1>
+  <!--this button should only display when the user loggedIn is viewing his/her own profile-->
   {{#if loggedIn}}
   <button type="button" onclick="window.location='/profile-edit/{{loggedIn.userID}}';">Edit Profile</button>
   {{/if}}   
@@ -37,13 +38,12 @@
         {{/if}}
         {{#if ../loggedIn}}
         <button type="button" class="flagCommentButton">Flag Comment</button>
-          <div class="flagCommentFormDiv" id="flagCommentFormDiv">
+          <div class="flagCommentDiv" id="flagCommentDiv">
           <textarea form="flagCommentForm" class="flagCommentBox" id="flagCommentBox"></textarea>
           <form class="flagCommentForm" id="flagCommentForm">
             <input type="hidden" class="flaggedCommentID" id="flaggedCommentID" name="commentId" value={{_id}}>            
             <button type="submit"> Submit </button>
           </form>    
-          <p class="test"></p>
         </div>
         <p class="flagCommentFormResponse" id="flagCommentFormResponse"></p>
         {{/if}}

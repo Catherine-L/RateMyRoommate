@@ -1,15 +1,19 @@
 {{#if isAdmin}}
 <h2>Flagged as Spam</h2>
 {{#each comments}}
-<p>{{comment}}</p> 
-  {{#each spam}}
-  <p>{{flagReason}}</p>
-  {{/each}}
-  <form action="/manage/delete/{{_id}}" method="post">
-    <input class="btn btn-default" type="submit" value="Delete Comment"/> 
-  </form>
-  <form action="/manage/unflag/{{_id}}" method="post">
-    <input class="btn btn-default" type="submit" value="Unflag Comment"/> 
-  </form>
+<h3>Comment: {{comment}}</h3>
+  <div data-adminoptions="{{@index}}">
+    <ul>
+    {{#each spam}}
+      <li>{{flagReason}}</li>
+    {{/each}}
+    </ul>
+      <input class="form-control" type="hidden" data-comment={{@index}} value={{_id}}> 
+      <button class="btn small btn-success" data-trigger="delete" formaction="/manage/delete/{{_id}}">Delete Comment</button>
+
+      <input class="form-control" type="hidden" data-comment={{@index}} value={{_id}}> 
+      <button class="btn small btn-success" data-trigger="unflag" formaction="/manage/unflag/{{_id}}">Unflag Comment</button>
+  </div>
+  <p data-adminresponse="{{@index}}"></p>
 {{/each}}
 {{/if}}
