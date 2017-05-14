@@ -18,7 +18,7 @@ let exportedMethods = {
             });
         });
     },
-     getUserByEmail(email) {
+    getUserByEmail(email) {
          //console.log(`looking for user with email ${email}`)
         return users().then((userCollection) => {
             return userCollection.findOne({ email: email }).then((user) => {
@@ -31,6 +31,69 @@ let exportedMethods = {
             console.log(err)
         })
     },
+
+    getUsersByName(name) {
+
+        let resultsArr = [];
+
+        let firstName = capFirst(name.trim().split(" ")[0]) || "";
+        let lastName = capFirst(name.trim().split(" ")[1]) || firstName; // defaults to firstName
+
+        let userCollection;
+
+        let usersFound = new Map();
+
+        return users().then(collection => {
+
+            userCollection = collection;
+
+            return userCollection.find({ firstName, lastName }).toArray()
+
+        }).then((nameResults) => {
+
+            resultsArr = resultsArr.concat(nameResults);
+
+            resultsArr.forEach(user => usersFound.set(user._id, true));
+
+            return userCollection.find({ firstName }).toArray();
+
+        }).then((firstNameResults) => {
+
+            let filteredFirstNames = firstNameResults.filter(user => !usersFound.has(user._id));
+
+            filteredFirstNames.forEach(user => usersFound.set(user._id, true));
+
+            resultsArr = resultsArr.concat(filteredFirstNames);
+
+            return userCollection.find({ lastName }).toArray()
+
+        }).then((lastNameResults) => {
+
+            let filteredLastNames = lastNameResults.filter(user => !usersFound.has(user._id));
+
+            resultsArr = resultsArr.concat(filteredLastNames);
+
+            return resultsArr;
+        });
+
+    },
+
+    getUsersByLocation(stateParam, cityParam) {
+
+        let state = stateParam.toUpperCase();
+        let city = capFirst(cityParam);
+
+        return users().then(userCollection => {
+
+            return userCollection.find({
+
+                "address.state": state,
+                "address.city": city
+
+            }).toArray();
+        });
+    },
+
     addUser(firstName, lastName, email, password, city, state, country) {
         return users().then((userCollection) => {
             let newUser = {
@@ -187,6 +250,15 @@ let exportedMethods = {
             });
         });
     }
+};
+
+// Utility functions
+
+function capFirst(str) {
+
+    return (str && str.length > 1) ?
+        str[0].toUpperCase() + str.slice(1).toLowerCase() :
+        str;
 }
 
 module.exports = exportedMethods;
