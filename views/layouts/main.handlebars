@@ -5,40 +5,47 @@
     <meta charset="utf-8">
     <title>Rate My Roommate</title>
     <link rel="stylesheet" href="/public/css/main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body>
-    <main class="header">
+
+    <div class="main-content-wrapper">
+
+        <nav class="main-nav">
+
+            <a href="/" class="site-logo"><img src="/public/images/logo.png" alt="Rate My Roommates"></a>
+
+            <a href="/search" class="nav-btn">Search by Name or Location</a>
+
+            {{#if loggedIn}}
+
+            <a href="/users/{{loggedIn.userID}}" class="nav-btn">Profile</a>
+            <a href="/logout" class="nav-btn">Log Out</a>
+
+            {{else}}
+
+            <a href="/login" class="nav-btn">Log In</a>
+            <a href="/signup" class="nav-btn">Sign Up</a>
+
+            {{/if}}
+
+        </nav>
+
+        <div class="body">{{{body}}}</div>
+
         <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-        <img src="/public/images/logo.png" alt="Rate My Roommates">
-        <form> 
-              <input type="text" name="search" placeholder="Search a Person or a City"> 
-              <button type="button" onclick="window.location='/search';">Search</button>
-        </form>
-    </main>
-    <nav>
-        {{#if loggedIn}}
-        <button type="button" onclick="window.location='/users/{{loggedIn.userID}}';">My Profile</button>
-        <!-- <button type="button">Comments and Ratings</button> -->
-        <button type="button" onclick="window.location='/logout';">Log Out</button>
-        {{else}}
-        <button type="button" onclick="window.location='/login';">Log In</button>
-        <button type="button" onclick="window.location='/signup';">Sign Up</button>
-        {{/if}}        
-    </nav>
+        <script src="/public/js/main.js"></script>
 
-    {{{body}}}
+        {{#if searchPage}}
 
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-    <script src="/public/js/main.js"></script>
+        <script src="/public/js/search.js"></script>
 
-    {{#if searchPage}}
+        {{/if}}
 
-    <script src="/public/js/search.js"></script>
+    </div>
 
-    {{/if}}
-
-    <footer>
+    <footer class="site-footer">
     &copy Team Empty String, 2017
     </footer>
 </body>

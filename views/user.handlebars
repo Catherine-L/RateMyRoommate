@@ -1,5 +1,5 @@
-<div class="body">
-  <h1>Profile</h1>
+<div>
+  <h1 class="page-heading">Profile</h1>
   <!--this button should only display when the user loggedIn is viewing his/her own profile-->
   {{#if myprofile}}
   <button type="button" onclick="window.location='/profile-edit/{{myprofile.userID}}';">Edit Profile</button>
@@ -40,7 +40,7 @@
         <button type="button" class="flagCommentButton">Flag Comment</button>
           <div class="flagCommentDiv" id="flagCommentDiv">
           <textarea form="flagCommentForm" class="flagCommentBox" id="flagCommentBox"></textarea>
-          <form class="flagCommentForm" id="flagCommentForm">
+          <form class="flagCommentForm page-form" id="flagCommentForm">
             <input type="hidden" class="flaggedCommentID" id="flaggedCommentID" name="commentId" value={{_id}}>            
             <button type="submit"> Submit </button>
           </form>    
@@ -56,7 +56,7 @@
     <button type="button" id="addCommentButton">Add Comment</button>
     <div id="commentFormDiv">
       <textarea form="addCommentForm" id="addCommentBox"></textarea>
-      <form id="addCommentForm">
+      <form id="addCommentForm" class="page-form">
         <!-- <div>
           <label for="addCommentBox"> Your Comment</label>
           <input id="addCommentBox" type="text" placeholder="Write here" />

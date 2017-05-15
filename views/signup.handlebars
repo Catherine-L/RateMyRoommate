@@ -1,4 +1,4 @@
-  <h2>Log In</h2>
+  <h2 class="page-heading">Sign Up</h2>
   {{#if message}}
     <p><strong>Error: </strong>{{message}}</p>
   {{/if}}
@@ -7,7 +7,7 @@
     <div class="alert alert-danger text-goes-here">
     </div>
   </div>
-  <form class="form-horizontal" action="/signup" method="post">
+  <form class="form-horizontal page-form" action="/signup" method="post">
     <div class="form-group">
       <label for="firstname">First Name:</label>
       <input id="firstname" class="form-control" type="text" name="firstname" />
