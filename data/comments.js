@@ -19,20 +19,20 @@ let exportedMethods = {
             });
         });
     },
-    addComment(userWhoCommented_id, userWhoCommentIsFor_id, comment, userFlagged_id, flagReason) {
+    getCommentsByUser(userId) {
+        return comments().then((commentCollection) => {
+            return commentCollection.find({userWhoCommentIsFor_id: userId.toString() }).toArray();
+        });
+    },
+    addComment(userWhoCommented_id, userWhoCommentIsFor_id, comment) {
         return comments().then((commentCollection) => {
             let newComment = {
                 _id: uuid.v4(),
                 userWhoCommented_id: userWhoCommented_id,
                 userWhoCommentIsFor_id: userWhoCommentIsFor_id,
-                date: new.Date(),
+                date: new Date(),
                 comment: comment,
-                spam:[
-                    {
-                        userFlagged_id: userFlagged_id,
-                        flagReason: flagReason
-                    }
-                ]
+                spam:[]
             };
             return commentCollection.insertOne(newComment).then((newInsertInformation) => {
                 return newInsertInformation.insertedId;
@@ -55,7 +55,7 @@ let exportedMethods = {
             let updatedComment = {
                 userWhoCommented_id: userWhoCommented_id,
                 userWhoCommentIsFor_id: userWhoCommentIsFor_id,
-                date: new.Date(),
+                date: new Date(),
                 comment: comment,
                 spam:[
                     {
@@ -68,6 +68,50 @@ let exportedMethods = {
                 return this.getCommentById(id);
             });
         });
+    },
+    addSpamFlagToComment(id, userFlagged_Id, flagReason)
+    {
+        if (!id)
+            return Promise.reject("Must provide a comment id");
+        if (!userFlagged_Id)
+            return Promise.reject("Must provide id of user that flagged");
+        if (!flagReason)
+            return Promise.reject("Must provide reason for flagging comment as spam");
+        
+        return comments().then((commentCollection)=>
+        {
+            let newSpamFlag =
+            {
+                userFlagged_Id: userFlagged_Id,
+                flagReason: flagReason
+            };
+
+            return commentCollection.update({_id: id}, {$push: {"spam": newSpamFlag}}).then((result) =>
+            {
+                if (!result)
+                    return Promise.reject("Problem flagging comment as spam");
+                return this.getCommentById(id);
+            });
+        });
+    },
+    getAllSpamComments()
+    {
+        return comments().then((commentCollection) =>
+        {
+            return commentCollection.find({spam: {$gt: []}}).toArray()
+        })
+    },
+    removeSpamFlagFromComment(id)
+    {
+        return comments().then((commentCollection) =>
+        {
+            return commentCollection.update({_id: id}, {$set: {spam: []}}).then((result) =>
+            {
+                if (!result)
+                    return Promise.reject("Problem unflagging comment as spam");
+                return this.getCommentById(id);
+            })
+        })
     }
 }
 

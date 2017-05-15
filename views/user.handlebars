@@ -1,0 +1,70 @@
+<div>
+  <h1 class="page-heading">Profile</h1>
+  <!--this button should only display when the user loggedIn is viewing his/her own profile-->
+  {{#if myprofile}}
+  <button type="button" onclick="window.location='/profile-edit/{{myprofile.userID}}';">Edit Profile</button>
+  {{/if}}   
+  <p> First Name: {{user.firstName}} </p>
+  <p> Last Name: {{user.lastName}} </p>
+  <p> Email: {{user.email}} </p>
+  <p> City: {{user.address.city}} </p>
+  <p> State: {{user.address.state}} </p>
+  <p> Country: {{user.address.country}} </p>
+  <p> Bio: {{user.bio}} </p>
+  <h2>Ratings</h2>
+
+    {{#each user.ratings as |value key|}}
+      {{#ifCond key '!=' "detail"}} <!-- details are not shown to users, internal use only -->
+        <p>{{key}}: {{value}} </p>
+      {{/ifCond}}
+    {{/each}}
+    {{#if loggedIn}}
+      {{#ifCond loggedIn.userID  '!=' user._id}}
+      <p> Have you lived with this person? </p>
+      <form id="addRating" method="get" action="/rate/{{../user._id}}">
+        <button type ="submit">Rate This Roommate</button>
+      </form>
+      {{/ifCond}}
+    {{/if}}
+  
+  <h2>Comments</h2>
+  <div>
+  {{#each comments}}
+    <div>
+      <p> Date: {{date}} </p>
+      <p> {{comment}} </p>
+        {{#if spam}}
+        <p>Flagged as spam</p>
+        {{/if}}
+        {{#if ../loggedIn}}
+        <button type="button" class="flagCommentButton">Flag Comment</button>
+          <div class="flagCommentDiv">
+          <textarea form="flagCommentForm{{_id}}" class="flagCommentBox"></textarea>
+          <form class="flagCommentForm" id="flagCommentForm{{_id}}">
+            <input type="hidden" class="flaggedCommentID" name="commentId" value={{_id}}>            
+            <button type="submit"> Submit </button>
+          </form>    
+        </div>
+        <p class="flagCommentFormResponse"></p>
+        {{/if}}
+    </div>
+  {{else}}
+    <p>No comments</p>
+  {{/each}}
+  </div>
+  {{#if loggedIn}}
+    <button type="button" id="addCommentButton">Add Comment</button>
+    <div id="commentFormDiv">
+      <textarea form="addCommentForm" id="addCommentBox"></textarea>
+      <form id="addCommentForm" class="page-form">
+        <!-- <div>
+          <label for="addCommentBox"> Your Comment</label>
+          <input id="addCommentBox" type="text" placeholder="Write here" />
+        </div> -->
+        <button type="submit"> Submit </button>
+      </form>
+      
+    </div>
+    <p id="commentFormResponse"></p>
+  {{/if}}
+</div>

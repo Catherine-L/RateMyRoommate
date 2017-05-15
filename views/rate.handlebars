@@ -1,0 +1,26 @@
+<h1 class="page-heading"> Rate {{user.firstName}} {{user.lastName}} </h1>
+
+<form id="ratingForm" class="page-form" method="POST">
+
+    <p>Rate {{user.firstName}} in each category from 1-5, with 1 (leftmost) being the least clean/loud/etc. and 5 (rightmost) being the most.</p>
+    
+    <input id="ratingUserID" type="hidden" value={{user._id}}>
+    
+    <label for="cleanlyRating">Cleanliness</label>
+    <input id = "cleanlyRating" name="cleanlyRating" type="range" min="1" max = "5" />
+
+    <label for="loudRating">Loudness</label>
+    <input id = "loudRating" name="loudRating" type="range" min="1" max = "5" />
+
+    <label for="annoyingRating">Annoyingness</label>
+    <input id = "annoyingRating" name="annoyingRating" type="range" min="1" max = "5" />
+
+    <label for="friendlyRating">Friendliness</label>
+    <input id = "friendlyRating" name="friendlyRating" type="range" min="1" max = "5" />
+
+    <label for="considerateRating">Considerateness</label>
+    <input id = "considerateRating" name="considerateRating" type="range" min="1" max = "5" />
+
+    <input class="form-control" type="submit" value="Submit"/>
+
+</form>

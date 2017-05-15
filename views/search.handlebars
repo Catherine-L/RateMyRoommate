@@ -1,0 +1,56 @@
+<div class="search-page">
+
+    <h1 class="page-heading">Find What You're Looking For</h1>
+
+    <div class="search-form-container">
+
+        <form id="name-search-form" class="page-form">
+
+            <label for="name-search-name">Name:</label>
+            <input type="text" id="name-search-name" name="name-search-name" required pattern="[A-Za-z\s\-']+">
+
+            <button type="submit">Search</button>
+
+        </form>
+
+        <p class="page-heading">Or</p>
+
+        <form id="location-search-form" class="page-form">
+
+            <label for="location-search-city">City:</label>
+            <input type="text" id="location-search-city" name="location-search-city" required pattern="[A-Za-z\s\-']+">
+
+            <label for="location-search-state">State:</label>
+            <input type="text" id="location-search-state" name="location-search-state" required pattern="[A-Za-z]{2}" maxlength="2">
+
+            <button type="submit">Search</button>
+
+        </form>
+    </div>
+
+    <div class="search-results">
+
+        <table id="search-results-table" class="hidden table">
+
+            <thead class="table-head">
+
+                <tr class="header-rows">
+                    <th class="name-row">Name</th>
+                    <th class="city-row">City</th>
+                    <th class="state-row">State</th>
+                    <th class="select-row">Select</th>
+                </tr>
+            </thead>
+
+            <tbody class="table-body">
+
+            </tbody>
+
+        </table>
+
+        <div class="no-search-results hidden">
+
+            No users found.
+        </div>
+    </div>
+</div>

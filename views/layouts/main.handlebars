@@ -1,33 +1,52 @@
-<!-- copied from lecture 9 code views/layouts/main.handlebars-->
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
     <title>Rate My Roommate</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
-        crossorigin="anonymous">
+    <link rel="stylesheet" href="/public/css/main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body>
-    <main class="header">
-          <img src="logo.png" alt="Logo" style="width:300px;height:100px;">
-          <form> <input type="text" name="search" placeholder="Search a Person or a City"> </form>
-          <button type="button">Log In / Sign Up</button>
-    </main>
 
-    {{{body}}}
+    <div class="main-content-wrapper">
 
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
-        crossorigin="anonymous"></script>
-    <script src="/public/js/form.js"></script>
+        <nav class="main-nav">
+
+            <a href="/" class="site-logo"><img src="/public/images/logo.png" alt="Rate My Roommates"></a>
+
+            <a href="/search" class="nav-btn">Search by Name or Location</a>
+
+            {{#if loggedIn}}
+
+            <a href="/users/{{loggedIn.userID}}" class="nav-btn">Profile</a>
+            <a href="/logout" class="nav-btn">Log Out</a>
+
+            {{else}}
+
+            <a href="/login" class="nav-btn">Log In</a>
+            <a href="/signup" class="nav-btn">Sign Up</a>
+
+            {{/if}}
+
+        </nav>
+
+        <div class="body">{{{body}}}</div>
+
+        <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+        <script src="/public/js/main.js"></script>
+
+        {{#if searchPage}}
+
+        <script src="/public/js/search.js"></script>
+
+        {{/if}}
+
+    </div>
+
+    <footer class="site-footer">
+    &copy; Team Empty String, 2017
+    </footer>
 </body>
-
-<footer>
-    empty footer
-</footer>
-
 </html>

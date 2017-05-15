@@ -1,15 +1,19 @@
 //copy from lecture 9 code for app.js 
 
 const express = require("express");
+const exphbs = require('express-handlebars');
+const expses = require('express-session');
+const Handlebars = require('handlebars');
 const bodyParser = require("body-parser");
+const cookieParser = require('cookie-parser')
+const flash = require('connect-flash')
+
+const configRoutes = require("./routes");
+const passport = require("./config/passport")
+
 const app = express();
 const static = express.static(__dirname + '/public');
 
-const configRoutes = require("./routes");
-
-const exphbs = require('express-handlebars');
-
-const Handlebars = require('handlebars');
 
 const handlebarsInstance = exphbs.create({
     defaultLayout: 'main',
@@ -20,6 +24,33 @@ const handlebarsInstance = exphbs.create({
                 return new Handlebars.SafeString(JSON.stringify(obj, null, spacing));
         
             return new Handlebars.SafeString(JSON.stringify(obj));
+        },
+        //let's have real if statements. Thanks stackoverflow: http://stackoverflow.com/questions/8853396/logical-operator-in-a-handlebars-js-if-conditional
+        ifCond: (v1, operator, v2, options) => {
+            switch (operator) {
+            case '==':
+                return (v1 == v2) ? options.fn(this) : options.inverse(this);
+            case '===':
+                return (v1 === v2) ? options.fn(this) : options.inverse(this);
+            case '!=':
+                return (v1 != v2) ? options.fn(this) : options.inverse(this);
+            case '!==':
+                return (v1 !== v2) ? options.fn(this) : options.inverse(this);
+            case '<':
+                return (v1 < v2) ? options.fn(this) : options.inverse(this);
+            case '<=':
+                return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+            case '>':
+                return (v1 > v2) ? options.fn(this) : options.inverse(this);
+            case '>=':
+                return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+            case '&&':
+                return (v1 && v2) ? options.fn(this) : options.inverse(this);
+            case '||':
+                return (v1 || v2) ? options.fn(this) : options.inverse(this);
+            default:
+                return options.inverse(this);
+            }
         }
     }
 });
@@ -39,6 +70,22 @@ const rewriteUnsupportedBrowserMethods = (req, res, next) => {
 
 app.use("/public", static);
 app.use(bodyParser.json());
+app.use(cookieParser())
+app.use(flash())
+app.use(expses({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true
+}))
+app.use(passport.initialize())
+app.use(passport.session())
+app.use('/logout', (req, res) =>
+{
+    req.logout()
+    res.redirect('/')
+})
+
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(rewriteUnsupportedBrowserMethods);
 

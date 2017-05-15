@@ -18,19 +18,97 @@ let exportedMethods = {
             });
         });
     },
-    addUser(firstName, lastName, email, password) {
+    getUserByEmail(email) {
+         //console.log(`looking for user with email ${email}`)
+        return users().then((userCollection) => {
+            return userCollection.findOne({ email: email }).then((user) => {
+                if (!user) return Promise.reject("User not found");
+                return user;
+            });
+        })
+         .catch((err) => 
+        {
+            console.log(err)
+        })
+    },
+
+    getUsersByName(name) {
+
+        let resultsArr = [];
+
+        let firstName = new RegExp(name.trim().split(" ")[0], 'i');
+        let lastName = new RegExp(name.trim().split(" ")[1] || firstName, 'i'); // defaults to firstName
+
+        let userCollection;
+
+        let usersFound = new Map();
+
+        return users().then(collection => {
+
+            userCollection = collection;
+
+            return userCollection.find({ firstName, lastName }).toArray()
+
+        }).then((nameResults) => {
+
+            resultsArr = resultsArr.concat(nameResults);
+
+            resultsArr.forEach(user => usersFound.set(user._id, true));
+
+            return userCollection.find({ firstName }).toArray();
+
+        }).then((firstNameResults) => {
+
+            let filteredFirstNames = firstNameResults.filter(user => !usersFound.has(user._id));
+
+            filteredFirstNames.forEach(user => usersFound.set(user._id, true));
+
+            resultsArr = resultsArr.concat(filteredFirstNames);
+
+            return userCollection.find({ lastName }).toArray()
+
+        }).then((lastNameResults) => {
+
+            let filteredLastNames = lastNameResults.filter(user => !usersFound.has(user._id));
+
+            resultsArr = resultsArr.concat(filteredLastNames);
+
+            return resultsArr;
+        });
+
+    },
+
+    getUsersByLocation(stateParam, cityParam) {
+
+        let regState = new RegExp(stateParam, 'i');
+        let regCity = new RegExp(cityParam, 'i');
+
+        return users().then(userCollection => {
+
+            return userCollection.find({
+
+                "address.state": regState,
+                "address.city": regCity
+
+            }).toArray();
+        });
+    },
+
+    addUser(firstName, lastName, email, password, city, state, country) {
         return users().then((userCollection) => {
             let newUser = {
                 _id: uuid.v4(),
+                isAdmin: false,
                 firstName: firstName,
                 lastName: lastName,
                 email: email,
                 password: password,
                 address:{
-                    city: null,
-                    state: null,
-                    country: null
+                    city: city,
+                    state: state,
+                    country: country
                 },
+                bio: null,
                 ratings:{
                     ratingCount: 0,
                     cleanlyAverage: 0,
@@ -51,11 +129,17 @@ let exportedMethods = {
                 }
             };
             return userCollection.insertOne(newUser).then((newInsertInformation) => {
+                if (!newInsertInformation)
+                    return Promise.reject("Unable to add user");
                 return newInsertInformation.insertedId;
             }).then((newId) => {
                 return this.getUserById(newId);
             });
-        });
+        })
+        .catch((err) => 
+        {
+            console.log(err)
+        })
     },
     removeUser(id) {
         return users().then((userCollection) => {
@@ -66,44 +150,103 @@ let exportedMethods = {
             });
         });
     },
-    updateUser(id, firstName, lastName, email, password, city, state, country, ratingCount, cleanlyAverage, 
-    loudAverage, annoyingAverage, friendlyAverage, considerateAverage, userWhoRated_id, cleanlyRating, loudRating, 
-    annoyingRating, friendlyRating, considerateRating) {
-        return this.getUserById(id).then((currentUser) => {
-            let updatedUser = {
-                firstName: firstName,
-                lastName: lastName,
-                email: email,
-                password: password,
-                address:{
-                    city: city,
-                    state: state,
-                    country: country
-                },
-                ratings:{
-                    ratingCount: ratingCount,
-                    cleanlyAverage: cleanlyAverage,
-                    loudAverage: loudAverage,
-                    annoyingAverage: annoyingAverage,
-                    friendlyAverage: friendlyAverage,
-                    considerateAverage: considerateAverage,
-                    detail:[
-                        {
-                            userWhoRated_id: userWhoRated_id,
-                            cleanlyRating: cleanlyRating, 
-                            loudRating: loudRating, 
-                            annoyingRating: annoyingRating, 
-                            friendlyRating: friendlyRating,
-                            considerateRating: considerateRating
-                        }
-                    ]
+    updateUserProfile(id, firstName, lastName, email, city, state, country, bio) {
+        return users().then((userCollection) =>{
+            return userCollection.findOne({ _id: id }).then((user) => {
+                if (!user) {
+                    throw "User not found";
+                } else {
+                    if(firstName) 
+                        user.firstName = firstName;
+    	            if(lastName) 
+    		            user.lastName = lastName;
+    	            if(email) 
+    		            user.email = email;
+                    if(city)
+                        user.address.city = city;
+    		        if(state) 
+                        user.address.state = state;
+                    if(country) 
+                        user.address.country = country;  
+                    if(bio) 
+    		            user.bio = bio; 
+                    return userCollection.updateOne({_id: id}, {$set: user}).then((result) => {
+                        if (!result) return Promise.reject("Unable to update Profile");
+                            return this.getUserById(id);
+                    }); 
                 }
+            });
+    	});
+    },
+    addRatingToUser(id, userWhoRatedId, cleanlyRating,loudRating,annoyingRating,friendlyRating,considerateRating)
+    {
+        return users().then((userCollection) =>{
+            let ratingDetails = {
+                userWhoRated_id: userWhoRatedId,
+                cleanlyRating: cleanlyRating, 
+                loudRating: loudRating, 
+                annoyingRating: annoyingRating, 
+                friendlyRating: friendlyRating,
+                considerateRating: considerateRating
             };
-            return userCollection.updateOne({ _id: id }, updatedUser).then(() => {
-                return this.getUserById(id);
+            return userCollection.update({_id: id}, {$push: {"ratings.detail": ratingDetails}}).then((result) =>{
+                if (!result)
+                    return Promise.reject("Unable to add rating");
+               
+                return this.getUserById(id).then((user) =>{
+                    let detail = user.ratings.detail;
+                    let ratingCount = 0;
+                    let cleanlyAverage = 0;
+                    let loudAverage = 0;
+                    let annoyingAverage = 0;
+                    let friendlyAverage = 0;
+                    let considerateAverage = 0;
+
+                    for (i in detail){
+                        ratingCount++;
+                        cleanlyAverage += parseInt(detail[i].cleanlyRating);
+                        loudAverage += parseInt(detail[i].loudRating);
+                        annoyingAverage += parseInt(detail[i].annoyingRating);
+                        friendlyAverage += parseInt(detail[i].friendlyRating);
+                        considerateAverage += parseInt(detail[i].considerateRating);
+                    }
+
+                    cleanlyAverage /= ratingCount;
+                    loudAverage /= ratingCount;
+                    annoyingAverage /= ratingCount;
+                    friendlyAverage /= ratingCount;
+                    considerateAverage /= ratingCount;
+
+                    let updateCommand =
+                    {
+                        $set: { "ratings.ratingCount": ratingCount,
+                            "ratings.cleanlyAverage": cleanlyAverage,
+                            "ratings.loudAverage": loudAverage,
+                            "ratings.annoyingAverage": annoyingAverage,
+                            "ratings.friendlyAverage": friendlyAverage,
+                            "ratings.considerateAverage": considerateAverage }
+                    }
+
+                    return userCollection.updateOne({_id: id}, updateCommand).then((result) =>
+                    {
+                        if (!result)
+                            return Promise.reject("Error updating averages");
+                        
+                        return this.getUserById(id);
+                    });
+                });
             });
         });
-    },
+    }
+};
+
+// Utility functions
+
+function capFirst(str) {
+
+    return (str && str.length > 1) ?
+        str[0].toUpperCase() + str.slice(1).toLowerCase() :
+        str;
 }
 
 module.exports = exportedMethods;

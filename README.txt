@@ -8,8 +8,13 @@ Setting Up
 - cd into the src directory
 - run 'npm install' to install all necessary dependencies
 
-Seeding the Database (maybe not needed)
-- run 'node ./tasks/seed.js' from the src directory within the project
+Seeding the Database
+- run 'npm run seed' from the src directory within the project
+- yu can't seed the database twice in a row; you must empty it before you seed again
+- this will run until you hit ctrl+c. hit ctrl+c.
+Emptying the Database
+-run 'npm run empty' from the src directory within the project
+- this will run until you hit ctrl+c. hit ctrl+c.
 
 Running the Application
 - run 'npm start' from the src directory of the project

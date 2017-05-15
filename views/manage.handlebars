@@ -1,0 +1,19 @@
+{{#if isAdmin}}
+<h1 class="page-heading">Flagged as Spam</h1>
+{{#each comments}}
+<h2 class="page-heading">Comment: {{comment}}</h2>
+  <div data-adminoptions="{{@index}}">
+    <ul>
+    {{#each spam}}
+      <li>{{flagReason}}</li>
+    {{/each}}
+    </ul>
+      <input class="form-control" type="hidden" data-comment={{@index}} value={{_id}}> 
+      <button class="btn small btn-success" data-trigger="delete" formaction="/manage/delete/{{_id}}">Delete Comment</button>
+
+      <input class="form-control" type="hidden" data-comment={{@index}} value={{_id}}> 
+      <button class="btn small btn-success" data-trigger="unflag" formaction="/manage/unflag/{{_id}}">Unflag Comment</button>
+  </div>
+  <p data-adminresponse="{{@index}}"></p>
+{{/each}}
+{{/if}}
