@@ -1,4 +1,3 @@
-//const commentRoutes = require("./comments");
 const userRoutes = require("./users");
 const homeRoute = require("./home");
 const loginRoute = require("./login");
@@ -9,7 +8,6 @@ const profileEditRoute = require("./profile-edit");
 const searchRoute = require("./search");
 
 const constructorMethod = (app) => {
-    //app.use("/comments", commentRoutes);
     app.use("/users", userRoutes);
     app.use('/home', homeRoute);
     app.use('/login', loginRoute);
