@@ -8,8 +8,10 @@ Setting Up
 - cd into the src directory
 - run 'npm install' to install all necessary dependencies
 
-Seeding the Database (maybe not needed)
-- run 'node ./tasks/seed.js' from the src directory within the project
+Seeding the Database
+- run 'npm seed' from the src directory within the project
+Emptying the Database
+-run 'npm empty' from the src directory within the project
 
 To create a sample database (pure mongo stuff, not node, for testing convenience. Perhaps delete existing db first, not sure)
 - run mongorestore -d rate_roommate data/sample_db/rate_roommate/ 
