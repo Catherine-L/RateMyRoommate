@@ -152,27 +152,29 @@ let exportedMethods = {
     },
     updateUserProfile(id, firstName, lastName, email, city, state, country, bio) {
         return users().then((userCollection) =>{
-            let updatedUserData = {};
-    	    if(firstName) 
-    		    updatedUserData.firstName = firstName;
-    	    if(lastName) 
-    		    updatedUserData.lastName = lastName;
-    	    if(email) 
-    		    updatedUserData.email = email;
-    	    if(city||state||country) {
-                updatedUserData.address = {};
-                if(city)
-                    updatedUserData.address.city = city;
-    		    if(state) 
-                    updatedUserData.address.state = state;
-                if(country) 
-                    updatedUserData.address.country = country;    		
-            }
-    	    if(bio) 
-    		    updatedUserData.bio = bio;
-    	    return userCollection.updateOne({_id: id}, {$set: updatedUserData}).then((result) => {
-                if (!result) return Promise.reject("Unable to update Profile");
-    		    return this.getUserById(id);
+            return userCollection.findOne({ _id: id }).then((user) => {
+                if (!user) {
+                    throw "User not found";
+                } else {
+                    if(firstName) 
+                        user.firstName = firstName;
+    	            if(lastName) 
+    		            user.lastName = lastName;
+    	            if(email) 
+    		            user.email = email;
+                    if(city)
+                        user.address.city = city;
+    		        if(state) 
+                        user.address.state = state;
+                    if(country) 
+                        user.address.country = country;  
+                    if(bio) 
+    		            user.bio = bio; 
+                    return userCollection.updateOne({_id: id}, {$set: user}).then((result) => {
+                        if (!result) return Promise.reject("Unable to update Profile");
+                            return this.getUserById(id);
+                    }); 
+                }
             });
     	});
     },
