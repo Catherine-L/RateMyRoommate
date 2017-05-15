@@ -159,20 +159,24 @@ let exportedMethods = {
                     if(firstName) 
                         user.firstName = firstName;
     	            if(lastName) 
-    		            user.lastName = lastName;
+    		        user.lastName = lastName;
     	            if(email) 
-    		            user.email = email;
+    		        user.email = email;
                     if(city)
                         user.address.city = city;
-    		        if(state) 
+    		    if(state) 
                         user.address.state = state;
                     if(country) 
                         user.address.country = country;  
                     if(bio) 
-    		            user.bio = bio; 
+    		        user.bio = bio;
+                    delete user._id;
+                    
                     return userCollection.updateOne({_id: id}, {$set: user}).then((result) => {
-                        if (!result) return Promise.reject("Unable to update Profile");
-                            return this.getUserById(id);
+                        if (!result) {
+                            return Promise.reject("Unable to update Profile");
+                        }
+                        return this.getUserById(id);
                     }); 
                 }
             });
