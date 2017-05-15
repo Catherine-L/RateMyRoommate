@@ -103,38 +103,6 @@ router.post("/", (req, res) => {
         });
 });
 
-router.put("/:id", (req, res) => {
-    let userInfo = req.body;
-
-    if (!userInfo) {
-        res.status(400).json({ error: "You must provide data to update a user" });
-        return;
-    }
-    /*
-    if (!userInfo.firstName) {
-        res.status(400).json({ error: "You must provide a first name" });
-        return;
-    }
-
-    if (!userInfo.lastName) {
-        res.status(400).json({ error: "You must provide a last name" });
-        return;
-    }
-    */
-
-    let getUser = userData.getUser(req.params.id).then(() => {
-        return userData.updateUser(req.params.id, userInfo)
-            .then((updatedUser) => {
-                res.json(updatedUser);
-            }, () => {
-                res.sendStatus(500);
-            });
-    }).catch(() => {
-        res.status(404).json({ error: "User not found" });
-    });
-
-});
-
 router.delete("/:id", (req, res) => {
     let user = userData.getUserById(req.params.id).then(() => {
         return userData.removeUser(req.params.id)
