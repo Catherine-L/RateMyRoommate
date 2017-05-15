@@ -21,7 +21,7 @@
     {{#if loggedIn}}
       {{#ifCond loggedIn.userID  '!=' user._id}}
       <p> Have you lived with this person? </p>
-      <form id="addRating" method="get" action="/rate/{{user._id}}">
+      <form id="addRating" method="get" action="/rate/{{../user._id}}">
         <button type ="submit">Rate This Roommate</button>
       </form>
       {{/ifCond}}
