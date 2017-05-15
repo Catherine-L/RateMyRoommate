@@ -29,6 +29,35 @@ $("#addCommentForm").submit(e => {
         });
     }
 });
+$("#editProfileForm").submit(e => {
+    e.preventDefault();
+    const id = $("#profileUserID").val()
+    const updateProfileData = {
+        firstName: $("#firstName").val(),
+        lastName: $("#lastName").val(),
+        email: $("#email").val(),
+        city: $("#city").val(),
+        state: $("#state").val(),
+        country: $("#country").val(),
+        bio: $("#bio").val(),
+    };
+    if (confirm("Are you sure you want to update your profile?"))
+    {
+        $.ajax({
+            type: "POST",
+            url: window.location.pathname,
+            data: JSON.stringify(updateProfileData),
+            success: function(data) {
+                if(data.errors.length > 0)
+                    $("#updateFormResponse").text("Error: "+data.errors);
+                else
+                    window.location=`/users/${id}`
+            },
+            contentType: "application/json",
+            dataType: "json"
+        });
+    }
+});
 $("#ratingForm").submit(e => {
     e.preventDefault();
     

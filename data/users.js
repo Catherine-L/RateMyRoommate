@@ -153,42 +153,28 @@ let exportedMethods = {
     updateUserProfile(id, firstName, lastName, email, city, state, country, bio) {
         return users().then((userCollection) =>{
             let updatedUserData = {};
-
-    		if(firstName) {
-    			updatedUserData.firstName = firstName;
-    		}
-    		if(lastName) {
-    			updatedUserData.lastName = lastName;
-    		}
-    		if(email) {
-    			updatedUserData.email = email;
-    		}
-    		if(city||state||country) {
+    	    if(firstName) 
+    		    updatedUserData.firstName = firstName;
+    	    if(lastName) 
+    		    updatedUserData.lastName = lastName;
+    	    if(email) 
+    		    updatedUserData.email = email;
+    	    if(city||state||country) {
                 updatedUserData.address = {};
-                if(city){
+                if(city)
                     updatedUserData.address.city = city;
-                }
-    			if(state) {
+    		    if(state) 
                     updatedUserData.address.state = state;
-                }
-                if(country) {
-                    updatedUserData.address.country = country;
-                }
-    		}
-    		if(bio) {
-    			updatedUserData.bio = bio;
-    		}
-    		let updateCommand = {
-    			$set: updatedUserData
-    		};
-
-    		return userCollection.updateOne({_id: id}, updateCommand).then((result) => {
-                if (!result){
-                    return Promise.reject("Unable to update Profile");
-                }
-    			return this.getUserById(id);
-    		});
-        });
+                if(country) 
+                    updatedUserData.address.country = country;    		
+            }
+    	    if(bio) 
+    		    updatedUserData.bio = bio;
+    	    return userCollection.updateOne({_id: id}, {$set: updatedUserData}).then((result) => {
+                if (!result) return Promise.reject("Unable to update Profile");
+    		    return this.getUserById(id);
+            });
+    	});
     },
     addRatingToUser(id, userWhoRatedId, cleanlyRating,loudRating,annoyingRating,friendlyRating,considerateRating)
     {
