@@ -27,19 +27,27 @@ router.post('/:id', (req, res) =>{
         res.json({ errors: "Need at least one field to update profile", success:false });
         errors.push("Need at least one field to update profile");
         return;
-    } 
-    if (newProfileInfo.email&&userData.getUserByEmail(newProfileInfo.email)){// email already exist
-        res.json({ errors: "Email already exists" , success:false });
-        errors.push("Email already exists");
-        return;
-    } else {
+    } else if (newProfileInfo.email){
+        userData.getUserByEmail(newProfileInfo.email).then((_data)=>{
+            if (_data){
+                res.json({ errors: "Email already exists" , success:false });
+                errors.push("Email already exists");
+                return;
+            } else {
+                userData.updateUserProfile(req.params.id, newProfileInfo.firstName, newProfileInfo.lastName, newProfileInfo.email,newProfileInfo.city, newProfileInfo.state, newProfileInfo.country, newProfileInfo.bio).then((updatedUserData) =>{
+                    res.json({errors: errors, success: true})
+                }).catch((e) =>{
+                    res.status(500).json({ errors: e, success:false }); 
+                });
+            }
+        });
+    } else{
         userData.updateUserProfile(req.params.id, newProfileInfo.firstName, newProfileInfo.lastName, newProfileInfo.email,newProfileInfo.city, newProfileInfo.state, newProfileInfo.country, newProfileInfo.bio).then((updatedUserData) =>{
            res.json({errors: errors, success: true})
         }).catch((e) =>{
            res.status(500).json({ errors: e, success:false }); 
         });
     }
-
 });
 
 module.exports = router;
