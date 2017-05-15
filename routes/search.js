@@ -4,7 +4,7 @@ const userData = require("../data/users");
 
 router.get('/', (req, res) => {
 
-    res.render('search', {searchPage: true});
+    res.render('search', {searchPage: true, loggedIn: req.user});
 });
 
 router.get('/name/:name', (req, res) => {
