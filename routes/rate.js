@@ -22,8 +22,6 @@ router.post('/:id', (req, res) =>
 {
     let ratingData = req.body; 
 
-   //todo error checking
-
     userData.addRatingToUser(req.params.id, req.user.userID, ratingData.cleanlyRating, ratingData.loudRating, 
         ratingData.annoyingRating, ratingData.friendlyRating, ratingData.considerateRating).then((updatedUserData) =>
         {
