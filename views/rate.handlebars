@@ -2,8 +2,10 @@
 
 <form id="ratingForm" class="page-form" method="POST">
 
+    <p>Rate {{user.firstName}} in each category from 1-5, with 1 (leftmost) being the least clean/loud/etc. and 5 (rightmost) being the most.</p>
+    
     <input id="ratingUserID" type="hidden" value={{user._id}}>
-
+    
     <label for="cleanlyRating">Cleanliness</label>
     <input id = "cleanlyRating" name="cleanlyRating" type="range" min="1" max = "5" />
 
