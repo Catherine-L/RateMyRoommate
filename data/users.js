@@ -36,8 +36,8 @@ let exportedMethods = {
 
         let resultsArr = [];
 
-        let firstName = capFirst(name.trim().split(" ")[0]) || "";
-        let lastName = capFirst(name.trim().split(" ")[1]) || firstName; // defaults to firstName
+        let firstName = new RegExp(name.trim().split(" ")[0], 'i');
+        let lastName = new RegExp(name.trim().split(" ")[1] || firstName, 'i'); // defaults to firstName
 
         let userCollection;
 
@@ -80,15 +80,15 @@ let exportedMethods = {
 
     getUsersByLocation(stateParam, cityParam) {
 
-        let state = stateParam.toUpperCase();
-        let city = capFirst(cityParam);
+        let regState = new RegExp(stateParam, 'i');
+        let regCity = new RegExp(cityParam, 'i');
 
         return users().then(userCollection => {
 
             return userCollection.find({
 
-                "address.state": state,
-                "address.city": city
+                "address.state": regState,
+                "address.city": regCity
 
             }).toArray();
         });
