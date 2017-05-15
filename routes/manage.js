@@ -7,20 +7,20 @@ router.get('/', (req, res) => {
   if(req.user) {
     if(req.user.isAdmin) {
       comments.getAllSpamComments().then((comments) => {
-        //console.log(comments)
+         //console.log(comments);
          res.render('manage',
           {
             loggedIn: req.user,
             isAdmin: req.user.isAdmin,
             comments: comments
-          })
+          });
       })
       .catch(() => {
         res.status(404).json({ error: "User not found" });
       });
     }
   } else {
-    res.render('manage')
+      res.render('manage');
   }
 });
 

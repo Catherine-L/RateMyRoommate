@@ -98,8 +98,8 @@ let exportedMethods = {
     {
         return comments().then((commentCollection) =>
         {
-            return commentCollection.find({spam: {$gt: []}}).toArray()
-        })
+            return commentCollection.find({spam: { $exists: true, $ne: [] }}).toArray();
+        });
     },
     removeSpamFlagFromComment(id)
     {
